@@ -41,7 +41,6 @@
             other_person = "person_1";
         }
         enemy_ship_numbers = creatShipNumbers(selected_type, other_person);
-        print(enemy_ship_numbers[0]);
         tableCreate();
     }
 
@@ -103,7 +102,7 @@
         var tbl = document.createElement('table');
         tbl.id = "ship_table";
         tbl.style.width = '100%';
-        tbl.setAttribute('border', '1');
+        tbl.setAttribute('border', '0');
         var tbdy = document.createElement('tbody');
         var count = 0;
         for (var i = 0; i < row; i++) {
@@ -111,6 +110,7 @@
             for (var j = 0; j < column; j++) {
                 var td = document.createElement('td');
                 td.appendChild(document.createTextNode('\u0020'));
+                td.appendChild(document.createElement("BR"));
                 var image = document.createElement("IMG");
                 image.src = battle_ship_path;
                 image.width = battle_ship_width;
@@ -119,9 +119,14 @@
                 var letter_value = String.fromCharCode('A'.charCodeAt() + count);
                 letter.appendChild(document.createTextNode(letter_value));
                 td.appendChild(letter);
+                td.appendChild(document.createTextNode(own_ship_numbers[count]));
+                td.appendChild(document.createElement("BR"));
+                td.appendChild(document.createElement("BR"));
+                td.appendChild(document.createElement("BR"));
                 tr.appendChild(td);
                 count = count + 1;
             }
+            tr.setAttribute("align", "center")
             tbdy.appendChild(tr);
         }
         tbl.appendChild(tbdy);
