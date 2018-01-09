@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="de">
+
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suche</title>
+  </head>
+
+
+
+  <body>
+  <header>
+    <h1>Suche</h1>
+  </header>
+  <body onload="startGame()">
+  <script>
+    var selected_search;
+    var selected_person;
+    var selected_type;
+    var row = 2;
+    var column = 13;
+    var ship_numbers = row * column;
+    var battle_ship_path = "battleship.png"
+    var battle_ship_width = 75;
+    var own_ship_numbers = [];
+    var enemy_ship_numbers = [];
+
+    function startGame(){
+        updateField();
+    }
+
+    function updateField(){
+        getFormValues();
+        own_ship_numbers = creatShipNumbers(selected_type, selected_person);
+        print(own_ship_numbers[0]);
+        tableCreate();
+    }
+
+    function getFormValues(){
+        var e
+        e = document.getElementById("search");
+        selected_search = e.options[e.selectedIndex].value;
+        e = document.getElementById("person");
+        selected_person = e.options[e.selectedIndex].value;
+        e = document.getElementById("type");
+        selected_type = e.options[e.selectedIndex].value;
+    }
+
+    function creatShipNumbers(type, person){
+        var type_value;
+        if(type == "type_a"){
+            type_value = 1;
+        } else if(type == "type_a"){
+            type_value = 2;
+        } else if(type == "type_b"){
+            type_value = 3;
+        } else if(type == "type_c"){
+            type_value = 4;
+        } else if(type == "type_d"){
+            type_value = 5;
+        }
+
+        var person_value;
+        if(person == "person_1"){
+            person_value = 1;
+        } else if(person == "person_2"){
+            person_value = 2;
+        }
+
+        var number_list = [];
+
+        for(i = 0; i < ship_numbers; i++){
+            number_list[i] = Math.floor(Math.PI * 1000 * person_value + 223 * type_value * i);
+        }
+
+        return number_list;
+    }
+
+    function tableCreate() {
+        var body = document.getElementsByTagName('body')[0];
+        var tbl = document.createElement('table');
+        tbl.style.width = '100%';
+        tbl.setAttribute('border', '1');
+        var tbdy = document.createElement('tbody');
+        var count = 0;
+        for (var i = 0; i < row; i++) {
+            var tr = document.createElement('tr');
+            for (var j = 0; j < column; j++) {
+                var td = document.createElement('td');
+                td.appendChild(document.createTextNode('\u0020'));
+                var image = document.createElement("IMG");
+                image.src = battle_ship_path;
+                image.width = battle_ship_width;
+                td.appendChild(image);
+                var letter = document.createElement("H3");
+                var letter_value = String.fromCharCode('A'.charCodeAt() + count);
+                letter.appendChild(document.createTextNode(letter_value));
+                td.appendChild(letter);
+                tr.appendChild(td);
+                count = count + 1;
+            }
+            tbdy.appendChild(tr);
+        }
+        tbl.appendChild(tbdy);
+        body.appendChild(tbl);
+    }
+
+    function print(message){
+        document.getElementById("debug_output").innerHTML = message;
+    }
+  </script>
+
+    <form class="selects" id="select"> 
+      <select id="search" onchange="updateField();">
+        <option value="linear">Linear</option>
+        <option value="binary">Binär</option>
+        <option value="hash">Hash</option>
+      </select>
+      <select id="person" onchange="updateField();">
+        <option value="person_1">Person 1</option>
+        <option value="person_2">Person 2</option>
+      </select>
+      <select id="type" onchange="updateField();">
+        <option value="type_a">Typ A</option>
+        <option value="type_b">Typ B</option>
+        <option value="type_c">Typ C</option>
+        <option value="type_d">Typ D</option>
+      </select>
+    </form>
+
+    <p id="debug_output"></p>
+  <body>
+</html>
