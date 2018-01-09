@@ -34,7 +34,14 @@
     function updateField(){
         getFormValues();
         own_ship_numbers = creatShipNumbers(selected_type, selected_person);
-        print(own_ship_numbers[0]);
+        var other_person;        
+        if(selected_person == "person_1"){
+            other_person = "person_2";
+        } else {
+            other_person = "person_1";
+        }
+        enemy_ship_numbers = creatShipNumbers(selected_type, other_person);
+        print(enemy_ship_numbers[0]);
         tableCreate();
     }
 
@@ -60,6 +67,12 @@
             type_value = 4;
         } else if(type == "type_d"){
             type_value = 5;
+        } else if(type == "type_e"){
+            type_value = 6;
+        } else if(type == "type_f"){
+            type_value = 7;
+        } else if(type == "type_g"){
+            type_value = 8;
         }
 
         var person_value;
@@ -72,15 +85,23 @@
         var number_list = [];
 
         for(i = 0; i < ship_numbers; i++){
-            number_list[i] = Math.floor(Math.PI * 1000 * person_value + 223 * type_value * i);
+            number_list[i] = Math.floor(Math.pow(Math.PI * 10000 * (7 * (person_value - 1)) * type_value + 7223 * type_value * (i + 1), person_value * (i + 1))) % 10000;
         }
 
         return number_list;
     }
 
     function tableCreate() {
+        var old_table = document.getElementById("ship_table");
+
+        // removing old table
+        if(old_table !== null){
+            old_table.parentNode.removeChild(old_table);
+        }
+
         var body = document.getElementsByTagName('body')[0];
         var tbl = document.createElement('table');
+        tbl.id = "ship_table";
         tbl.style.width = '100%';
         tbl.setAttribute('border', '1');
         var tbdy = document.createElement('tbody');
@@ -127,6 +148,9 @@
         <option value="type_b">Typ B</option>
         <option value="type_c">Typ C</option>
         <option value="type_d">Typ D</option>
+        <option value="type_e">Typ E</option>
+        <option value="type_f">Typ F</option>
+        <option value="type_g">Typ G</option>
       </select>
     </form>
 
