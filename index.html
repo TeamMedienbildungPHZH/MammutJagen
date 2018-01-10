@@ -30,7 +30,7 @@
     var last_clicked_td = null;
     var normal_color = "White";
     var own_color = "YellowGreen";
-    var other_color = "OrangeRed";
+    var enemy_color = "OrangeRed";
     var number_of_tries;
     var try_text;
 
@@ -95,33 +95,36 @@
 
         var number_list = [];
 
-        var digit_sum = type_value + 6;
+        const number_max = 9999;
+        const digit_sum_max = 34;
+        const digit_sum_min = 6;
+        const digit_sum_part_size = 4;
+        const digit_sum_step = 3;
+        var digit_sum = type_value + 6 + person_value;
         var digit_sum_count = 0;
         for(i = 0; i < ship_numbers; i++){
-            number_list[i] = number_list[i] = Math.floor(Math.pow(Math.PI * 10000 * (7 * (person_value - 1)) * type_value + 7223 * type_value * (i + 1), person_value * (i % 10 + 1))) % 10000;
+            // generate "predictable random" number
+            number_list[i] = number_list[i] = Math.floor(Math.pow(Math.PI * 10000 * (7 * (person_value - 1)) * type_value + 7223 * type_value * (i + 1), person_value * (i % 10 + 1))) % (number_max + 1);
             if(selected_search == "hash"){
-                digit_sum = digit_sum % 34;
-                while(generateDigitSum(number_list[i]) != digit_sum){
+                if(digit_sum > digit_sum_max){
+                    digit_sum = digit_sum_min;
+                }
+                while(generateDigitSum(number_list[i]) != digit_sum || containsSame(number_list)){
                     number_list[i] += 1;
-                    if(number_list[i] > 9999){
+                    if(number_list[i] > number_max){
                         number_list[i] = 0;
                     }
                 }
 
                 digit_sum_count++;
-                if(digit_sum_count % 4 == 3){
-                    digit_sum += 3;
+                if(digit_sum_count % digit_sum_part_size == (digit_sum_part_size - 1)){
+                    digit_sum += digit_sum_step;
                 }
             }
         }
 
         if(selected_search == "binary"){
             number_list.sort();
-        } else if(selected_search == "hash"){
-            var dict = {};
-            for(i = 0; i < number_list.length; i++){
-                dict[generateDigitSum(number_list[i])] = number_list[i];
-            }
         }
 
         return number_list;
@@ -212,7 +215,7 @@
             td.style.backgroundColor = normal_color;
             number_of_tries = number_of_tries - 1;
         } else {
-            td.style.backgroundColor = other_color;
+            td.style.backgroundColor = enemy_color;
             number_of_tries = number_of_tries + 1;
         }
         updateTries();
@@ -231,6 +234,17 @@
         }
 
         return sum;
+    }
+
+    function containsSame(list){
+        var copy_list = list.slice(0);
+        copy_list.sort();
+        for(i = 0; i < copy_list.length - 1; i++){
+            if(copy_list[i] == copy_list[i + 1]){
+                return true;
+            }
+        }
+        return false;
     }
 
     function print(message){
