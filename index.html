@@ -239,8 +239,8 @@
     function containsSame(list){
         var copy_list = list.slice(0);
         copy_list.sort();
-        for(i = 0; i < copy_list.length - 1; i++){
-            if(copy_list[i] == copy_list[i + 1]){
+        for(k = 0; k < copy_list.length - 1; k++){
+            if(copy_list[k] == copy_list[k + 1]){
                 return true;
             }
         }
