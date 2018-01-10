@@ -109,8 +109,13 @@
         if(old_table !== null){
             old_table.parentNode.removeChild(old_table);
         }
-
-        var body = document.getElementsByTagName('body')[0];
+        
+        var div
+        if(own){
+            div = document.getElementById('own_table');
+        } else {
+            div = document.getElementById('other_table');
+        }
         var table = document.createElement('table');
         table.id = "ship_table_" + own;
         table.style.width = '100%';
@@ -153,7 +158,7 @@
             tbdy.appendChild(tr);
         }
         table.appendChild(tbdy);
-        body.appendChild(table);
+        div.appendChild(table);
         return table;
     }
 
@@ -209,6 +214,9 @@
       </select>
     </form>
     <h2 id="try"></h2>
+    <div id="own_table"></div>
+    <br><br>
+    <div id="other_table"></div>
     <p id="debug_output"></p>
   <body>
 </html>
