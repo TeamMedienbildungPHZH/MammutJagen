@@ -24,14 +24,21 @@
     var ship_numbers = row * column;
     var battle_ship_path = "battleship.png"
     var battle_ship_width = 75;
+    var text_field_style_width = "40px";
     var own_ship_numbers = [];
     var enemy_ship_numbers = [];
+    var last_clicked_td = null;
+    var normal_color = "White";
+    var own_color = "YellowGreen";
+    var other_color = "OrangeRed";
+    var number_of_tries;
 
     function startGame(){
         updateField();
     }
 
     function updateField(){
+        number_of_tries = 0;
         getFormValues();
         own_ship_numbers = creatShipNumbers(selected_type, selected_person);
         var other_person;        
@@ -41,7 +48,8 @@
             other_person = "person_1";
         }
         enemy_ship_numbers = creatShipNumbers(selected_type, other_person);
-        tableCreate();
+        tableCreate(true);
+        tableCreate(false);
     }
 
     function getFormValues(){
@@ -90,8 +98,8 @@
         return number_list;
     }
 
-    function tableCreate() {
-        var old_table = document.getElementById("ship_table");
+    function tableCreate(own) {
+        var old_table = document.getElementById("ship_table_" + own);
 
         // removing old table
         if(old_table !== null){
@@ -99,16 +107,18 @@
         }
 
         var body = document.getElementsByTagName('body')[0];
-        var tbl = document.createElement('table');
-        tbl.id = "ship_table";
-        tbl.style.width = '100%';
-        tbl.setAttribute('border', '0');
+        var table = document.createElement('table');
+        table.id = "ship_table_" + own;
+        table.style.width = '100%';
+        table.setAttribute('border', '0');
         var tbdy = document.createElement('tbody');
         var count = 0;
         for (var i = 0; i < row; i++) {
             var tr = document.createElement('tr');
             for (var j = 0; j < column; j++) {
+                const td_id = "td_" + own + "_" + 'A'.charCodeAt() + count;
                 var td = document.createElement('td');
+                td.id = td_id;
                 td.appendChild(document.createTextNode('\u0020'));
                 td.appendChild(document.createElement("BR"));
                 var image = document.createElement("IMG");
@@ -119,7 +129,16 @@
                 var letter_value = String.fromCharCode('A'.charCodeAt() + count);
                 letter.appendChild(document.createTextNode(letter_value));
                 td.appendChild(letter);
-                td.appendChild(document.createTextNode(own_ship_numbers[count]));
+                if(own){
+                    td.appendChild(document.createTextNode(own_ship_numbers[count]));
+                    image.onclick = function() {markOwn(td_id)};
+                } else {
+                    var input = document.createElement("input");
+                    input.type = "text";
+                    input.style.width = text_field_style_width;
+                    td.appendChild(input);
+                    image.onclick = function() {markOther(td_id)};
+                }
                 td.appendChild(document.createElement("BR"));
                 td.appendChild(document.createElement("BR"));
                 td.appendChild(document.createElement("BR"));
@@ -129,8 +148,30 @@
             tr.setAttribute("align", "center")
             tbdy.appendChild(tr);
         }
-        tbl.appendChild(tbdy);
-        body.appendChild(tbl);
+        table.appendChild(tbdy);
+        body.appendChild(table);
+        return table;
+    }
+
+    function markOwn(id){
+        var td = document.getElementById(id);
+        if(last_clicked_td !== null){
+            last_clicked_td.style.backgroundColor = normal_color;
+        }
+
+        last_clicked_td = td;
+        td.style.backgroundColor = own_color;
+    }
+
+    function markOther(id){
+        var td = document.getElementById(id);
+        if(td.style.backgroundColor == "orangered"){
+            td.style.backgroundColor = normal_color;
+            number_of_tries = number_of_tries - 1;
+        } else {
+            td.style.backgroundColor = other_color;
+            number_of_tries = number_of_tries + 1;
+        }
     }
 
     function print(message){
