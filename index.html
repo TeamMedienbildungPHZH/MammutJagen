@@ -3,16 +3,26 @@
 
 
   <head>
+  <style>
+    body {
+    	font-family: Helvetica, Arial, Geneva, sans-serif;
+    }
+    
+    .quelle {
+    	font-size: 12px
+    }
+    </style>
+    
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suche</title>
+    <title>Mammut jagen</title>
   </head>
 
 
 
   <body>
   <header>
-    <h1>Suche</h1>
+    <h1>Mammut jagen</h1>
   </header>
   <body onload="startGame()">
   <script>
@@ -23,8 +33,8 @@
     var row = 2;
     var column = 13;
     var ship_numbers = row * column;
-    var battle_ship_path = "battleship.png"
-    var battle_ship_width = 75;
+    var battle_ship_path = "mammut_small.png"
+    var battle_ship_width = 50;
     var text_field_style_width = "40px";
     var own_ship_numbers = [];
     var enemy_ship_numbers = [];
@@ -55,6 +65,10 @@
         tableCreate(true, selected_search);
         tableCreate(false, selected_search);
         updateTries();
+    }
+    
+    function updateTries(){
+        try_text.textContent = "Versuche: " + number_of_tries;
     }
 
     function getFormValues(){
@@ -98,8 +112,8 @@
 
         const digit_sum_max = 34;
         const digit_sum_min = 6;
-        const digit_sum_part_size = 4;
-        const digit_sum_step = 3;
+        const digit_sum_part_size = 3;
+        const digit_sum_step = 2;
         var digit_sum = type_value + 6 + person_value;
         var digit_sum_count = 0;
         for(i = 0; i < ship_numbers; i++){
@@ -221,9 +235,6 @@
         updateTries();
     }
 
-    function updateTries(){
-        try_text.textContent = "Versuche: " + number_of_tries;
-    }
 
     function generateDigitSum(value){
         var sum = 0;
@@ -272,10 +283,26 @@
         <option value="type_g">Typ G</option>
       </select>
     </form>
-    <h2 id="try"></h2>
+    
+    <br>
+    <br>
+    <h2>Meine Mammuts</h2>
+    
     <div id="own_table"></div>
-    <br><br>
+    <br>
+
+    <h2>Deine Mammuts</h2>
+	<h3 id="try"></h3>
+	<p>Gewicht des gesuchten Mammuts: <input type="text" name="Gewicht" value=""></p>
+	<br>
     <div id="other_table"></div>
     <p id="debug_output"></p>
+    <br>
+    <br>
+    <p class="quelle">Quelle: <a href="http://csunplugged.org/searching-algorithms/">CS Unplugged</a></p>
+    <br>
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons Lizenzvertrag" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
+	&nbsp; &nbsp; <img alt="PHZH" height="32" src="PHZH_Zusatz_13mm.jpg" /> &nbsp; <img alt="Logo PHZH" height="32" src="phzh_logo_black-ohne-Zusatz.jpg" />
+    <br /><p class="quelle">Dieses Werk ist lizenziert unter einer <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Namensnennung - Nicht-kommerziell - Weitergabe unter gleichen Bedingungen 4.0 International Lizenz</a>.</p>
   <body>
 </html>
