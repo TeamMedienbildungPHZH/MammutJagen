@@ -2,6 +2,8 @@
 
 Spiel in Partnerarbeit: Mit möglichst wenig Zügen das Mammut des Gegenübers erraten. Lineares, Binäres und Hashing-Suchverfahren dabei kennenlernen.
 
+Aktuelle Version: https://teammedienbildungphzh.github.io/MammutJagen/
+
 Aufbauend auf: CS Unplugged Classic "Search algorithms": https://classic.csunplugged.org/searching-algorithms/
 sowie der neuen Version: https://csunplugged.org/en/topics/searching-algorithms/sequential-and-binary-search-unit-plan/
 
