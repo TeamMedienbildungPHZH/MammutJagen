@@ -118,7 +118,7 @@
         var digit_sum_count = 0;
         for(i = 0; i < ship_numbers; i++){
             // generate "predictable random" number
-            number_list[i] = number_list[i] = Math.floor(Math.pow(Math.PI * (number_max + 1) * (7 * (person_value - 1)) * type_value + 7223 * type_value * (i + 1), person_value * (i % 10 + 1))) % (number_max + 1);
+            number_list[i] = Math.floor(Math.pow(Math.PI * (number_max + 1) * (7 * (person_value - 1)) * type_value + 7223 * type_value * (i + 1), person_value * (i % 10 + 1))) % (number_max + 1);
             if(selected_search == "hash"){
                 if(digit_sum > digit_sum_max){
                     digit_sum = digit_sum_min;
@@ -234,7 +234,6 @@
         }
         updateTries();
     }
-
 
     function generateDigitSum(value){
         var sum = 0;
