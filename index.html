@@ -138,7 +138,7 @@
         }
 
         if(selected_search == "binary"){
-            number_list.sort();
+            number_list.sort(numberSort);
         }
 
         return number_list;
@@ -261,6 +261,12 @@
     function print(message){
         document.getElementById("debug_output").innerHTML = message;
     }
+
+    // sort function to prevent alphabetical sort
+    numberSort = function (a,b) {
+        return a - b;
+    };
+
   </script>
 
     <form class="selects" id="select"> 
