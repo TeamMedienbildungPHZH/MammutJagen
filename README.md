@@ -9,4 +9,4 @@ sowie der neuen Version: https://csunplugged.org/en/topics/searching-algorithms/
 
 Weiter passend zu: Inform@21 Lehrmittel "Schatzsuche": https://inform21.ch/sich-zu-helfen-wissen/
 
-CC-BY-SA Pädagogische Hochschule Zürich, Zentrum Medienbildung und Informatik https://phzh.ch/de/medienbildung im Rahmen des Grundlagenkurses Medien und Informatik GMI für die Primarstufe.
+CC-BY-NC-SA Pädagogische Hochschule Zürich, Zentrum Medienbildung und Informatik https://phzh.ch/de/medienbildung im Rahmen des Grundlagenkurses Medien und Informatik GMI für die Primarstufe.
