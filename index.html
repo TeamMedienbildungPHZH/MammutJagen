@@ -40,8 +40,8 @@
     var enemy_ship_numbers = [];
     var last_clicked_td = null;
     var normal_color = "White";
-    var own_color = "DodgerBlue";
-    var enemy_color = "MediumOrchid";
+    var own_color = "dodgerblue";
+    var enemy_color = "mediumorchid"; //if changed, change in function markOther() in lowercase as well
     var number_of_tries;
     var try_text;
 
@@ -235,7 +235,7 @@
 
     function markOther(id){
         var td = document.getElementById(id);
-        if(td.style.backgroundColor == "orangered"){
+        if(td.style.backgroundColor == "mediumorchid"){
             td.style.backgroundColor = normal_color;
             number_of_tries = number_of_tries - 1;
         } else {
