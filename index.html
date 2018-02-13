@@ -116,9 +116,11 @@
         const digit_sum_step = 2;
         var digit_sum = type_value + 6 + person_value;
         var digit_sum_count = 0;
+        var base_value = 0;     // used to count up while i can be manipulated.
         for(i = 0; i < ship_numbers; i++){
             // generate "predictable random" number
-            number_list[i] = Math.floor(Math.pow(Math.PI * (number_max + 1) * (7 * (person_value - 1)) * type_value + 7223 * type_value * (i + 1), person_value * (i % 10 + 1))) % (number_max + 1);
+            number_list[i] = Math.floor(Math.pow(Math.PI * (number_max + 1) * (7 * (person_value - 1)) * type_value + 7223 * type_value * (base_value + 1), person_value * (base_value % 10 + 1))) % (number_max + 1);
+            base_value++;
             if(selected_search == "hash"){
                 if(digit_sum > digit_sum_max){
                     digit_sum = digit_sum_min;
@@ -133,6 +135,14 @@
                 digit_sum_count++;
                 if(digit_sum_count % digit_sum_part_size == (digit_sum_part_size - 1)){
                     digit_sum += digit_sum_step;
+                }
+            } else {
+                // find duplicates
+                for(j = 0; j < i; j++){
+                    if(number_list[j] == number_list[i]){
+                        i--;
+                        break;
+                    }
                 }
             }
         }
