@@ -188,8 +188,13 @@ function ownDropdownCreate(search_type) {
     var option;
 
     for (var i = 0; i < ship_numbers; i++) {
-        const option_id = "option" + 'A'.charCodeAt() + i;
-        const option_text = "Mammut " + String.fromCharCode('A'.charCodeAt() + i) + " Gewicht: " + own_ship_numbers[i];
+        var option_id = "option" + 'A'.charCodeAt() + i;
+        var option_text = "Mammut " + String.fromCharCode('A'.charCodeAt() + i) + " Gewicht: " + own_ship_numbers[i];
+
+        if(selected_search == "hash"){
+            option_text = option_text + " Quersumme: " + generateDigitSum(own_ship_numbers[i]);
+        }
+        
         option = dropdown.appendChild(document.createElement('option'));
         option.setAttribute("value", option_id);
         option.appendChild(document.createTextNode(option_text));
