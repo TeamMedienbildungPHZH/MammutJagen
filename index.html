@@ -30,24 +30,50 @@
         <script src="mammoth.js"></script>
 
         <form class="selects" id="select">
-            <select id="search" onchange="updateField();">
-                <option value="linear">Linear</option>
-                <option value="binary">Binär</option>
-                <option value="hash">Hash</option>
-            </select>
-            <select id="person" onchange="updateField();">
-                <option value="person_1">Person 1</option>
-                <option value="person_2">Person 2</option>
-            </select>
-            <select id="type" onchange="updateField();">
-                <option value="type_a">Typ A</option>
-                <option value="type_b">Typ B</option>
-                <option value="type_c">Typ C</option>
-                <option value="type_d">Typ D</option>
-                <option value="type_e">Typ E</option>
-                <option value="type_f">Typ F</option>
-                <option value="type_g">Typ G</option>
-            </select>
+            <table>
+                <tr>
+                    <th>
+                        <select id="search" onchange="updateField();">
+                            <option value="linear">Linear</option>
+                            <option value="binary">Binär</option>
+                            <option value="hash">Hash</option>
+                        </select>
+                    </th>
+                    <th style="width: 10px"></th>
+                    <th>
+                        <select id="person" onchange="updateField();">
+                            <option value="person_1">Person 1</option>
+                            <option value="person_2">Person 2</option>
+                        </select>
+                    </th>
+                    <th  style="width: 10px"></th>
+                    <th>
+                        <input type="checkbox" id="expert_mode" onchange="updateField();">
+                    </th>
+                    <th>
+                        <p id="expert_mode_text">Experten-Modus</p>
+                    </th>
+                    <th style="width: 30px"></th>
+                    <th>
+                        <select id="type" onchange="updateField();">
+                            <option value="type_a">Typ A</option>
+                            <option value="type_b">Typ B</option>
+                            <option value="type_c">Typ C</option>
+                            <option value="type_d">Typ D</option>
+                            <option value="type_e">Typ E</option>
+                            <option value="type_f">Typ F</option>
+                            <option value="type_g">Typ G</option>
+                        </select>
+                    </th>
+                    <th style="width: 10px"></th>
+                    <th>
+                        <input type="checkbox" id="led" onchange="updateField();" checked>
+                    </th>
+                    <th>
+                        <p id="led_text">geführt</p>
+                    </th>
+                </tr>
+            </table>
         </form>
 
         <br>

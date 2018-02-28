@@ -1,6 +1,8 @@
 var selected_search;
 var selected_person;
 var selected_type;
+var selected_expert_mode
+var selected_led
 var ship_numbers = row * column;
 var own_ship_numbers = [];
 var enemy_ship_numbers = [];
@@ -17,6 +19,7 @@ function startGame() {
 function updateField() {
     number_of_tries = 0;
     getFormValues();
+    updateForms();
     own_ship_numbers = creatShipNumbers(selected_type, selected_person, selected_search);
     var other_person;
     if (selected_person == "person_1") {
@@ -34,6 +37,25 @@ function updateTries() {
     try_text.textContent = "Versuche: " + number_of_tries;
 }
 
+function updateForms(){
+    var e;
+    if(selected_expert_mode){
+        e = document.getElementById("type");
+        e.style.visibility = "visible";
+        e = document.getElementById("led");
+        e.style.visibility = "visible";
+        e = document.getElementById("led_text");
+        e.style.visibility = "visible";
+    } else {
+        e = document.getElementById("type");
+        e.style.visibility = "hidden";
+        e = document.getElementById("led");
+        e.style.visibility = "hidden";
+        e = document.getElementById("led_text");
+        e.style.visibility = "hidden";
+    }
+}
+
 function getFormValues() {
     var e
     e = document.getElementById("search");
@@ -42,6 +64,10 @@ function getFormValues() {
     selected_person = e.options[e.selectedIndex].value;
     e = document.getElementById("type");
     selected_type = e.options[e.selectedIndex].value;
+    e = document.getElementById("expert_mode");
+    selected_expert_mode = e.checked;
+    e = document.getElementById("led");
+    selected_led = e.checked;
 }
 
 function creatShipNumbers(type, person, search_type) {
