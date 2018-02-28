@@ -1,14 +1,18 @@
 var selected_search;
 var selected_person;
 var selected_type;
-var selected_expert_mode
-var selected_led
+var selected_expert_mode;
+var selected_led;
+var selected_enemy_weight;
 var ship_numbers = row * column;
 var own_ship_numbers = [];
 var enemy_ship_numbers = [];
 var last_clicked_td = null;
 var number_of_tries;
 var try_text;
+var led_list = [];
+var last_weight_step;
+var last_weight_input;
 
 function startGame() {
     try_text = document.createTextNode('');
@@ -95,11 +99,22 @@ function getFormValues() {
     new_value = e.checked;
     if (new_value != selected_led) {
         selected_led = new_value;
+        change = true;
+    }
+
+    e = document.getElementById("weight");
+    new_value = e.value;
+    if (new_value != selected_enemy_weight) {
+        selected_enemy_weight = new_value;
+        // no change
     }
 
     if (change) {
         e = document.getElementById("weight");
         e.value = "";
+
+        led_list.length = 0;
+        last_weight_step = 0;
     }
 }
 
@@ -218,6 +233,7 @@ function enemyTableCreate(search_type) {
     table.setAttribute('border', '0');
     var tbdy = document.createElement('tbody');
     var count = 0;
+    var next_id = getNextLedID(last_weight_input);
     for (var i = 0; i < row; i++) {
         var tr = document.createElement('tr');
         for (var j = 0; j < column; j++) {
@@ -252,18 +268,49 @@ function enemyTableCreate(search_type) {
                 input_no.type = "radio";
                 input_no.name = "radio_yes_no_" + count;
                 label_no.textContent = "Nein";
-                td.appendChild(input_yes);
-                td.appendChild(label_yes);
-                td.appendChild(document.createElement("BR"));
-                td.appendChild(input_no);
-                td.appendChild(label_no);
-            } else {
+
+                if(selected_led){
+                    if(count == next_id){
+                        td.appendChild(input_yes);
+                        td.appendChild(label_yes);
+                        td.appendChild(document.createElement("BR"));
+                        td.appendChild(input_no);
+                        td.appendChild(label_no);
+
+                        input_no.onclick = function () { updateField(true) };
+                    }
+                } else {
+                    input_yes.onclick = function () { markOther(td_id) };
+                    input_no.onclick = function () { markOther(td_id) };
+
+                    td.appendChild(input_yes);
+                    td.appendChild(label_yes);
+                    td.appendChild(document.createElement("BR"));
+                    td.appendChild(input_no);
+                    td.appendChild(label_no);
+                }
+            } else if(selected_search == "binary") {
+                if(count == next_id){
+                    var input = document.createElement("input");
+                    input.type = "text";
+                    input.id = "weight_input_" + count;
+                    input.onkeydown = function () { getLastWeightInput(input.id) };
+                    input.style.width = text_field_style_width;
+                    td.appendChild(input);
+                }
+            } else if(selected_search == "hash") {
                 var input = document.createElement("input");
                 input.type = "text";
+                input.id = "weight_input_" + count;
                 input.style.width = text_field_style_width;
                 td.appendChild(input);
             }
-            image.onclick = function () { markOther(td_id) };
+
+            if(selected_led){
+                
+            } else {
+                image.onclick = function () { markOther(td_id) };
+            }
 
             td.appendChild(document.createElement("BR"));
             td.appendChild(document.createElement("BR"));
@@ -279,14 +326,12 @@ function enemyTableCreate(search_type) {
     return table;
 }
 
-function markOwn(id) {
-    var td = document.getElementById(id);
-    if (last_clicked_td !== null) {
-        last_clicked_td.style.backgroundColor = normal_color;
+function getLastWeightInput(id){
+    if(event.keyCode == 13){
+        var input = document.getElementById(id);
+        last_weight_input = Number(input.value);
+        updateField(true);
     }
-
-    last_clicked_td = td;
-    td.style.backgroundColor = own_color;
 }
 
 function markOther(id) {
@@ -299,6 +344,36 @@ function markOther(id) {
         number_of_tries = number_of_tries + 1;
     }
     updateTries();
+}
+
+function getNextLedID(weight_value){
+    if(led_list.length == 0){
+        if(selected_search == "linear"){
+            led_list.push(0)
+            return 0;
+        } else if(selected_search == "binary"){
+            led_list.push(ship_numbers);
+            last_weight_step = ship_numbers;
+        }
+    }
+
+    var last_value = led_list[led_list.length - 1];
+    var new_value;
+    var new_step;
+    if(selected_search == "linear"){
+        new_value = last_value + 1;
+    } else if(selected_search == "binary"){
+        last_weight_step = last_weight_step / 2;
+        if(weight_value < selected_enemy_weight){
+            new_value = last_value + last_weight_step;
+        } else {
+            new_value = last_value - last_weight_step;
+        }
+    }
+
+    new_value = Math.floor(new_value);
+    led_list.push(new_value);
+    return new_value;
 }
 
 function generateDigitSum(value) {
