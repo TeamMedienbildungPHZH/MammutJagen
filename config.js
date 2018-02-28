@@ -6,4 +6,4 @@ const battle_ship_width = 50;
 const text_field_style_width = "40px";
 const normal_color = "White";
 const own_color = "dodgerblue";
-const enemy_color = "mediumorchid";     //if changed, change in function markOther() in lowercase as well
+const enemy_color = "mediumorchid";
