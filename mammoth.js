@@ -8,18 +8,18 @@ var last_clicked_td = null;
 var number_of_tries;
 var try_text;
 
-function startGame(){
+function startGame() {
     try_text = document.createTextNode('');
     document.getElementById("try").appendChild(try_text);
     updateField();
 }
 
-function updateField(){
+function updateField() {
     number_of_tries = 0;
     getFormValues();
     own_ship_numbers = creatShipNumbers(selected_type, selected_person, selected_search);
-    var other_person;        
-    if(selected_person == "person_1"){
+    var other_person;
+    if (selected_person == "person_1") {
         other_person = "person_2";
     } else {
         other_person = "person_1";
@@ -30,11 +30,11 @@ function updateField(){
     updateTries();
 }
 
-function updateTries(){
+function updateTries() {
     try_text.textContent = "Versuche: " + number_of_tries;
 }
 
-function getFormValues(){
+function getFormValues() {
     var e
     e = document.getElementById("search");
     selected_search = e.options[e.selectedIndex].value;
@@ -44,30 +44,30 @@ function getFormValues(){
     selected_type = e.options[e.selectedIndex].value;
 }
 
-function creatShipNumbers(type, person, search_type){
+function creatShipNumbers(type, person, search_type) {
     var type_value;
-    if(type == "type_a"){
+    if (type == "type_a") {
         type_value = 1;
-    } else if(type == "type_a"){
+    } else if (type == "type_a") {
         type_value = 2;
-    } else if(type == "type_b"){
+    } else if (type == "type_b") {
         type_value = 3;
-    } else if(type == "type_c"){
+    } else if (type == "type_c") {
         type_value = 4;
-    } else if(type == "type_d"){
+    } else if (type == "type_d") {
         type_value = 5;
-    } else if(type == "type_e"){
+    } else if (type == "type_e") {
         type_value = 6;
-    } else if(type == "type_f"){
+    } else if (type == "type_f") {
         type_value = 7;
-    } else if(type == "type_g"){
+    } else if (type == "type_g") {
         type_value = 8;
     }
 
     var person_value;
-    if(person == "person_1"){
+    if (person == "person_1") {
         person_value = 1;
-    } else if(person == "person_2"){
+    } else if (person == "person_2") {
         person_value = 2;
     }
 
@@ -80,29 +80,29 @@ function creatShipNumbers(type, person, search_type){
     var digit_sum = type_value + 6 + person_value;
     var digit_sum_count = 0;
     var base_value = 0;     // used to count up while i can be manipulated.
-    for(i = 0; i < ship_numbers; i++){
+    for (i = 0; i < ship_numbers; i++) {
         // generate "predictable random" number
         number_list[i] = Math.floor(Math.pow(Math.PI * (number_max + 1) * (7 * (person_value - 1)) * type_value + 7223 * type_value * (base_value + 1), person_value * (base_value % 10 + 1))) % (number_max + 1);
         base_value++;
-        if(selected_search == "hash"){
-            if(digit_sum > digit_sum_max){
+        if (selected_search == "hash") {
+            if (digit_sum > digit_sum_max) {
                 digit_sum = digit_sum_min;
             }
-            while(generateDigitSum(number_list[i]) != digit_sum || containsSame(number_list)){
+            while (generateDigitSum(number_list[i]) != digit_sum || containsSame(number_list)) {
                 number_list[i] += 1;
-                if(number_list[i] > number_max){
+                if (number_list[i] > number_max) {
                     number_list[i] = 0;
                 }
             }
 
             digit_sum_count++;
-            if(digit_sum_count % digit_sum_part_size == (digit_sum_part_size - 1)){
+            if (digit_sum_count % digit_sum_part_size == (digit_sum_part_size - 1)) {
                 digit_sum += digit_sum_step;
             }
         } else {
             // find duplicates
-            for(j = 0; j < i; j++){
-                if(number_list[j] == number_list[i]){
+            for (j = 0; j < i; j++) {
+                if (number_list[j] == number_list[i]) {
                     i--;
                     break;
                 }
@@ -110,7 +110,7 @@ function creatShipNumbers(type, person, search_type){
         }
     }
 
-    if(selected_search == "binary"){
+    if (selected_search == "binary") {
         number_list.sort(numberSort);
     }
 
@@ -121,12 +121,12 @@ function tableCreate(own, search_type) {
     var old_table = document.getElementById("ship_table_" + own);
 
     // removing old table
-    if(old_table !== null){
+    if (old_table !== null) {
         old_table.parentNode.removeChild(old_table);
     }
-    
+
     var div
-    if(own){
+    if (own) {
         div = document.getElementById('own_table');
     } else {
         div = document.getElementById('other_table');
@@ -151,9 +151,9 @@ function tableCreate(own, search_type) {
             td.appendChild(image);
             var letter = document.createElement("H3");
             var letter_value = String.fromCharCode('A'.charCodeAt() + count);
-            if(search_type == "hash"){
+            if (search_type == "hash") {
                 var digit_sum_number;
-                if(own){
+                if (own) {
                     digit_sum_number = generateDigitSum(own_ship_numbers[count]);
                 } else {
                     digit_sum_number = generateDigitSum(enemy_ship_numbers[count]);
@@ -162,15 +162,15 @@ function tableCreate(own, search_type) {
             }
             letter.appendChild(document.createTextNode(letter_value));
             td.appendChild(letter);
-            if(own){
+            if (own) {
                 td.appendChild(document.createTextNode(own_ship_numbers[count]));
-                image.onclick = function() {markOwn(td_id)};
+                image.onclick = function () { markOwn(td_id) };
             } else {
                 var input = document.createElement("input");
                 input.type = "text";
                 input.style.width = text_field_style_width;
                 td.appendChild(input);
-                image.onclick = function() {markOther(td_id)};
+                image.onclick = function () { markOther(td_id) };
             }
             td.appendChild(document.createElement("BR"));
             td.appendChild(document.createElement("BR"));
@@ -186,9 +186,9 @@ function tableCreate(own, search_type) {
     return table;
 }
 
-function markOwn(id){
+function markOwn(id) {
     var td = document.getElementById(id);
-    if(last_clicked_td !== null){
+    if (last_clicked_td !== null) {
         last_clicked_td.style.backgroundColor = normal_color;
     }
 
@@ -196,9 +196,9 @@ function markOwn(id){
     td.style.backgroundColor = own_color;
 }
 
-function markOther(id){
+function markOther(id) {
     var td = document.getElementById(id);
-    if(td.style.backgroundColor == enemy_color){
+    if (td.style.backgroundColor == enemy_color) {
         td.style.backgroundColor = normal_color;
         number_of_tries = number_of_tries - 1;
     } else {
@@ -208,10 +208,10 @@ function markOther(id){
     updateTries();
 }
 
-function generateDigitSum(value){
+function generateDigitSum(value) {
     var sum = 0;
 
-    while(value){
+    while (value) {
         sum += value % 10;
         value = Math.floor(value / 10);
     }
@@ -219,22 +219,22 @@ function generateDigitSum(value){
     return sum;
 }
 
-function containsSame(list){
+function containsSame(list) {
     var copy_list = list.slice(0);
     copy_list.sort();
-    for(k = 0; k < copy_list.length - 1; k++){
-        if(copy_list[k] == copy_list[k + 1]){
+    for (k = 0; k < copy_list.length - 1; k++) {
+        if (copy_list[k] == copy_list[k + 1]) {
             return true;
         }
     }
     return false;
 }
 
-function print(message){
+function print(message) {
     document.getElementById("debug_output").innerHTML = message;
 }
 
 // sort function to prevent alphabetical sort
-numberSort = function (a,b) {
+numberSort = function (a, b) {
     return a - b;
 };

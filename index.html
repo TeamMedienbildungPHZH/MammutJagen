@@ -2,72 +2,88 @@
 <html lang="de">
 
 
-  <head>
-  <style>
-    body {
-    	font-family: Helvetica, Arial, Geneva, sans-serif;
-    }
-    
-    .quelle {
-    	font-size: 12px
-    }
+<head>
+    <style>
+        body {
+            font-family: Helvetica, Arial, Geneva, sans-serif;
+        }
+
+        .quelle {
+            font-size: 12px
+        }
     </style>
-    
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mammut jagen</title>
-  </head>
+</head>
 
 
 
-  <body>
-  <header>
-    <h1>Mammut jagen</h1>
-  </header>
-  <body onload="startGame()">
-  <script src="config.js"></script>
-  <script src="mammoth.js"></script>
+<body>
+    <header>
+        <h1>Mammut jagen</h1>
+    </header>
 
-    <form class="selects" id="select"> 
-      <select id="search" onchange="updateField();">
-        <option value="linear">Linear</option>
-        <option value="binary">Binär</option>
-        <option value="hash">Hash</option>
-      </select>
-      <select id="person" onchange="updateField();">
-        <option value="person_1">Person 1</option>
-        <option value="person_2">Person 2</option>
-      </select>
-      <select id="type" onchange="updateField();">
-        <option value="type_a">Typ A</option>
-        <option value="type_b">Typ B</option>
-        <option value="type_c">Typ C</option>
-        <option value="type_d">Typ D</option>
-        <option value="type_e">Typ E</option>
-        <option value="type_f">Typ F</option>
-        <option value="type_g">Typ G</option>
-      </select>
-    </form>
-    
-    <br>
-    <br>
-    <h2>Meine Mammuts</h2>
-    
-    <div id="own_table"></div>
-    <br>
+    <body onload="startGame()">
+        <script src="config.js"></script>
+        <script src="mammoth.js"></script>
 
-    <h2>Deine Mammuts</h2>
-	<h3 id="try"></h3>
-	<p>Gewicht des gesuchten Mammuts: <input type="text" name="Gewicht" value=""></p>
-	<br>
-    <div id="other_table"></div>
-    <p id="debug_output"></p>
-    <br>
-    <br>
-    <p class="quelle">Quelle: <a href="http://csunplugged.org/searching-algorithms/" target="_blank">CS Unplugged</a></p>
-    <br>
-    <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.de" target="_blank"><img alt="Creative Commons Lizenzvertrag" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
-	&nbsp; &nbsp; <img alt="PHZH" height="32" src="PHZH_Zusatz_13mm.jpg" /> &nbsp; <img alt="Logo PHZH" height="32" src="phzh_logo_black-ohne-Zusatz.jpg" />
-    <br /><p class="quelle">Dieses Werk ist lizenziert unter einer <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.de" target="_blank">Creative Commons Namensnennung - Nicht-kommerziell - Weitergabe unter gleichen Bedingungen 4.0 International Lizenz</a>.</p>
-  <body>
+        <form class="selects" id="select">
+            <select id="search" onchange="updateField();">
+                <option value="linear">Linear</option>
+                <option value="binary">Binär</option>
+                <option value="hash">Hash</option>
+            </select>
+            <select id="person" onchange="updateField();">
+                <option value="person_1">Person 1</option>
+                <option value="person_2">Person 2</option>
+            </select>
+            <select id="type" onchange="updateField();">
+                <option value="type_a">Typ A</option>
+                <option value="type_b">Typ B</option>
+                <option value="type_c">Typ C</option>
+                <option value="type_d">Typ D</option>
+                <option value="type_e">Typ E</option>
+                <option value="type_f">Typ F</option>
+                <option value="type_g">Typ G</option>
+            </select>
+        </form>
+
+        <br>
+        <br>
+        <h2>Meine Mammuts</h2>
+
+        <div id="own_table"></div>
+        <br>
+
+        <h2>Deine Mammuts</h2>
+        <h3 id="try"></h3>
+        <p>Gewicht des gesuchten Mammuts:
+            <input type="text" name="Gewicht" value="">
+        </p>
+        <br>
+        <div id="other_table"></div>
+        <p id="debug_output"></p>
+        <br>
+        <br>
+        <p class="quelle">Quelle:
+            <a href="http://csunplugged.org/searching-algorithms/" target="_blank">CS Unplugged</a>
+        </p>
+        <br>
+        <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.de" target="_blank">
+            <img alt="Creative Commons Lizenzvertrag" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"
+            />
+        </a>
+        &nbsp; &nbsp;
+        <img alt="PHZH" height="32" src="PHZH_Zusatz_13mm.jpg" /> &nbsp;
+        <img alt="Logo PHZH" height="32" src="phzh_logo_black-ohne-Zusatz.jpg" />
+        <br />
+        <p class="quelle">Dieses Werk ist lizenziert unter einer
+            <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.de"
+                target="_blank">Creative Commons Namensnennung - Nicht-kommerziell - Weitergabe unter gleichen Bedingungen 4.0 International
+                Lizenz</a>.</p>
+
+        <body>
+
 </html>
