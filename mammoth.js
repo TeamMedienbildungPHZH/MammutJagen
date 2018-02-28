@@ -194,7 +194,7 @@ function ownDropdownCreate(search_type) {
         if(selected_search == "hash"){
             option_text = option_text + " Quersumme: " + generateDigitSum(own_ship_numbers[i]);
         }
-        
+
         option = dropdown.appendChild(document.createElement('option'));
         option.setAttribute("value", option_id);
         option.appendChild(document.createTextNode(option_text));
@@ -240,10 +240,29 @@ function enemyTableCreate(search_type) {
             letter.appendChild(document.createTextNode(letter_value));
             td.appendChild(letter);
 
-            var input = document.createElement("input");
-            input.type = "text";
-            input.style.width = text_field_style_width;
-            td.appendChild(input);
+            
+            if(selected_search == "linear"){
+                var input_yes = document.createElement("input");
+                var input_no = document.createElement("input");
+                var label_yes = document.createElement("label");
+                var label_no = document.createElement("label");
+                input_yes.type = "radio";
+                input_yes.name = "radio_yes_no_" + count;
+                label_yes.textContent = "Ja";
+                input_no.type = "radio";
+                input_no.name = "radio_yes_no_" + count;
+                label_no.textContent = "Nein";
+                td.appendChild(input_yes);
+                td.appendChild(label_yes);
+                td.appendChild(document.createElement("BR"));
+                td.appendChild(input_no);
+                td.appendChild(label_no);
+            } else {
+                var input = document.createElement("input");
+                input.type = "text";
+                input.style.width = text_field_style_width;
+                td.appendChild(input);
+            }
             image.onclick = function () { markOther(td_id) };
 
             td.appendChild(document.createElement("BR"));
