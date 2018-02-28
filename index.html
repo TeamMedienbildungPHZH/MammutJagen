@@ -33,7 +33,7 @@
             <table>
                 <tr>
                     <th>
-                        <select id="search" onchange="updateField();">
+                        <select id="search" onchange="updateField(true);">
                             <option value="linear">Linear</option>
                             <option value="binary">Binär</option>
                             <option value="hash">Hash</option>
@@ -41,21 +41,21 @@
                     </th>
                     <th style="width: 10px"></th>
                     <th>
-                        <select id="person" onchange="updateField();">
+                        <select id="person" onchange="updateField(true);">
                             <option value="person_1">Person 1</option>
                             <option value="person_2">Person 2</option>
                         </select>
                     </th>
-                    <th  style="width: 10px"></th>
+                    <th style="width: 10px"></th>
                     <th>
-                        <input type="checkbox" id="expert_mode" onchange="updateField();">
+                        <input type="checkbox" id="expert_mode" onchange="updateField(false);">
                     </th>
                     <th>
                         <p id="expert_mode_text">Experten-Modus</p>
                     </th>
                     <th style="width: 30px"></th>
                     <th>
-                        <select id="type" onchange="updateField();">
+                        <select id="type" onchange="updateField(true);">
                             <option value="type_a">Typ A</option>
                             <option value="type_b">Typ B</option>
                             <option value="type_c">Typ C</option>
@@ -67,7 +67,7 @@
                     </th>
                     <th style="width: 10px"></th>
                     <th>
-                        <input type="checkbox" id="led" onchange="updateField();" checked>
+                        <input type="checkbox" id="led" onchange="updateField(true);" checked>
                     </th>
                     <th>
                         <p id="led_text">geführt</p>
@@ -80,7 +80,11 @@
         <br>
         <h2>Mein Mammut</h2>
 
-        <div id="own_table"></div>
+        <div>
+            <form class="own">
+                <select id="own_dropdown"></select>
+            </form>
+        </div>
         <br>
 
         <h2>Deine Mammuts</h2>
@@ -106,9 +110,9 @@
         <img alt="Logo PHZH" height="32" src="phzh_logo_black-ohne-Zusatz.jpg" />
         <br />
         <p class="quelle">Dieses Werk ist lizenziert unter einer
-            <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.de"
-                target="_blank">Creative Commons Namensnennung - Nicht-kommerziell - Weitergabe unter gleichen Bedingungen 4.0 International
-                Lizenz</a>.</p>
+            <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.de" target="_blank">Creative Commons Namensnennung - Nicht-kommerziell - Weitergabe unter gleichen Bedingungen 4.0 International
+                Lizenz
+            </a>.</p>
 
         <body>
 

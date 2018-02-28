@@ -13,10 +13,10 @@ var try_text;
 function startGame() {
     try_text = document.createTextNode('');
     document.getElementById("try").appendChild(try_text);
-    updateField();
+    updateField(true);
 }
 
-function updateField() {
+function updateField(recreating) {
     number_of_tries = 0;
     getFormValues();
     updateForms();
@@ -28,8 +28,10 @@ function updateField() {
         other_person = "person_1";
     }
     enemy_ship_numbers = creatShipNumbers(selected_type, other_person, selected_search);
-    tableCreate(true, selected_search);
-    tableCreate(false, selected_search);
+    if (recreating) {
+        ownDropdownCreate(selected_search);
+        enemyTableCreate(selected_search);
+    }
     updateTries();
 }
 
@@ -37,9 +39,9 @@ function updateTries() {
     try_text.textContent = "Versuche: " + number_of_tries;
 }
 
-function updateForms(){
+function updateForms() {
     var e;
-    if(selected_expert_mode){
+    if (selected_expert_mode) {
         e = document.getElementById("type");
         e.style.visibility = "visible";
         e = document.getElementById("led");
@@ -60,42 +62,42 @@ function getFormValues() {
     var e
     var change = false;
     var new_value;
-    
+
     e = document.getElementById("search");
     new_value = e.options[e.selectedIndex].value;
-    if(new_value != selected_search){
+    if (new_value != selected_search) {
         selected_search = new_value;
         change = true;
     }
 
     e = document.getElementById("person");
     new_value = e.options[e.selectedIndex].value;
-    if(new_value != selected_person){
+    if (new_value != selected_person) {
         selected_person = new_value
         change = true;
     }
-    
+
     e = document.getElementById("type");
     new_value = e.options[e.selectedIndex].value;
-    if(new_value != selected_type){
+    if (new_value != selected_type) {
         selected_type = new_value;
         change = true;
     }
 
     e = document.getElementById("expert_mode");
     new_value = e.checked;
-    if(new_value != selected_expert_mode){
+    if (new_value != selected_expert_mode) {
         selected_expert_mode = new_value;
         // no change
     }
-    
+
     e = document.getElementById("led");
     new_value = e.checked;
-    if(new_value != selected_led){
+    if (new_value != selected_led) {
         selected_led = new_value;
     }
 
-    if(change){
+    if (change) {
         e = document.getElementById("weight");
         e.value = "";
     }
@@ -174,8 +176,28 @@ function creatShipNumbers(type, person, search_type) {
     return number_list;
 }
 
-function tableCreate(own, search_type) {
-    var old_table = document.getElementById("ship_table_" + own);
+function ownDropdownCreate(search_type) {
+    var dropdown = document.getElementById("own_dropdown");
+
+
+    // removing old drop down values
+    while (dropdown.firstChild) {
+        dropdown.removeChild(dropdown.firstChild);
+    }
+
+    var option;
+
+    for (var i = 0; i < ship_numbers; i++) {
+        const option_id = "option" + 'A'.charCodeAt() + i;
+        const option_text = "Mammut " + String.fromCharCode('A'.charCodeAt() + i) + " Gewicht: " + own_ship_numbers[i];
+        option = dropdown.appendChild(document.createElement('option'));
+        option.setAttribute("value", option_id);
+        option.appendChild(document.createTextNode(option_text));
+    }
+}
+
+function enemyTableCreate(search_type) {
+    var old_table = document.getElementById("ship_table");
 
     // removing old table
     if (old_table !== null) {
@@ -183,13 +205,10 @@ function tableCreate(own, search_type) {
     }
 
     var div
-    if (own) {
-        div = document.getElementById('own_table');
-    } else {
-        div = document.getElementById('other_table');
-    }
+    div = document.getElementById('other_table');
+
     var table = document.createElement('table');
-    table.id = "ship_table_" + own;
+    table.id = "ship_table";
     table.style.width = '100%';
     table.setAttribute('border', '0');
     var tbdy = document.createElement('tbody');
@@ -197,7 +216,7 @@ function tableCreate(own, search_type) {
     for (var i = 0; i < row; i++) {
         var tr = document.createElement('tr');
         for (var j = 0; j < column; j++) {
-            const td_id = "td_" + own + "_" + 'A'.charCodeAt() + count;
+            const td_id = "td" + 'A'.charCodeAt() + count;
             var td = document.createElement('td');
             td.id = td_id;
             td.appendChild(document.createTextNode('\u0020'));
@@ -210,25 +229,18 @@ function tableCreate(own, search_type) {
             var letter_value = String.fromCharCode('A'.charCodeAt() + count);
             if (search_type == "hash") {
                 var digit_sum_number;
-                if (own) {
-                    digit_sum_number = generateDigitSum(own_ship_numbers[count]);
-                } else {
-                    digit_sum_number = generateDigitSum(enemy_ship_numbers[count]);
-                }
+                digit_sum_number = generateDigitSum(enemy_ship_numbers[count]);
                 letter_value = letter_value + " QS: " + digit_sum_number;
             }
             letter.appendChild(document.createTextNode(letter_value));
             td.appendChild(letter);
-            if (own) {
-                td.appendChild(document.createTextNode(own_ship_numbers[count]));
-                image.onclick = function () { markOwn(td_id) };
-            } else {
-                var input = document.createElement("input");
-                input.type = "text";
-                input.style.width = text_field_style_width;
-                td.appendChild(input);
-                image.onclick = function () { markOther(td_id) };
-            }
+
+            var input = document.createElement("input");
+            input.type = "text";
+            input.style.width = text_field_style_width;
+            td.appendChild(input);
+            image.onclick = function () { markOther(td_id) };
+
             td.appendChild(document.createElement("BR"));
             td.appendChild(document.createElement("BR"));
             td.appendChild(document.createElement("BR"));
