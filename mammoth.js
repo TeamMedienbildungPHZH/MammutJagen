@@ -58,16 +58,47 @@ function updateForms(){
 
 function getFormValues() {
     var e
+    var change = false;
+    var new_value;
+    
     e = document.getElementById("search");
-    selected_search = e.options[e.selectedIndex].value;
+    new_value = e.options[e.selectedIndex].value;
+    if(new_value != selected_search){
+        selected_search = new_value;
+        change = true;
+    }
+
     e = document.getElementById("person");
-    selected_person = e.options[e.selectedIndex].value;
+    new_value = e.options[e.selectedIndex].value;
+    if(new_value != selected_person){
+        selected_person = new_value
+        change = true;
+    }
+    
     e = document.getElementById("type");
-    selected_type = e.options[e.selectedIndex].value;
+    new_value = e.options[e.selectedIndex].value;
+    if(new_value != selected_type){
+        selected_type = new_value;
+        change = true;
+    }
+
     e = document.getElementById("expert_mode");
-    selected_expert_mode = e.checked;
+    new_value = e.checked;
+    if(new_value != selected_expert_mode){
+        selected_expert_mode = new_value;
+        // no change
+    }
+    
     e = document.getElementById("led");
-    selected_led = e.checked;
+    new_value = e.checked;
+    if(new_value != selected_led){
+        selected_led = new_value;
+    }
+
+    if(change){
+        e = document.getElementById("weight");
+        e.value = "";
+    }
 }
 
 function creatShipNumbers(type, person, search_type) {
