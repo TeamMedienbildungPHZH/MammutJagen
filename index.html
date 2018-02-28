@@ -25,23 +25,15 @@
     <h1>Mammut jagen</h1>
   </header>
   <body onload="startGame()">
+  <script src="config.js"></script>
   <script>
     var selected_search;
     var selected_person;
     var selected_type;
-    const number_max = 9999;
-    var row = 2;
-    var column = 13;
     var ship_numbers = row * column;
-    var battle_ship_path = "mammut_small.png"
-    var battle_ship_width = 50;
-    var text_field_style_width = "40px";
     var own_ship_numbers = [];
     var enemy_ship_numbers = [];
     var last_clicked_td = null;
-    var normal_color = "White";
-    var own_color = "dodgerblue";
-    var enemy_color = "mediumorchid"; //if changed, change in function markOther() in lowercase as well
     var number_of_tries;
     var try_text;
 
