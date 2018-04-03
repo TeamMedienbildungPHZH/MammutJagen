@@ -17,11 +17,13 @@ var last_weight_input;
 function startGame() {
     try_text = document.createTextNode('');
     document.getElementById("try").appendChild(try_text);
-    updateField(true);
+    updateField(true, true);
 }
 
-function updateField(recreating) {
-    number_of_tries = 0;
+function updateField(recreating, resetting) {
+    if(resetting){
+        number_of_tries = 0;
+    }
     getFormValues();
     updateForms();
     own_mammoth_numbers = creatShipNumbers(selected_type, selected_person, selected_search);
@@ -278,7 +280,7 @@ function enemyTableCreate(search_type) {
                         td.appendChild(label_no);
 
                         input_yes.onclick = function() { markAsFound(td_id) };
-                        input_no.onclick = function () { updateField(true) };
+                        input_no.onclick = function () { clickedOnLinearNo() };
                     }
                 } else {
                     input_yes.onclick = function () { markOther(td_id) };
@@ -291,13 +293,15 @@ function enemyTableCreate(search_type) {
                     td.appendChild(label_no);
                 }
             } else if(selected_search == "binary") {
-                if(count == next_id){
-                    var input = document.createElement("input");
-                    input.type = "text";
-                    input.id = "weight_input_" + count;
-                    input.onkeydown = function () { getLastWeightInput(input.id, td_id) };
-                    input.style.width = text_field_style_width;
-                    td.appendChild(input);
+                if(selected_led){
+                    if(count == next_id){
+                        var input = document.createElement("input");
+                        input.type = "text";
+                        input.id = "weight_input_" + count;
+                        input.onkeydown = function () { getLastWeightInput(input.id, td_id) };
+                        input.style.width = text_field_style_width;
+                        td.appendChild(input);
+                    }
                 }
             } else if(selected_search == "hash") {
                 var input = document.createElement("input");
@@ -334,9 +338,15 @@ function getLastWeightInput(input_id, td_id){
         if(last_weight_input == selected_enemy_weight){
             markAsFound(td_id);
         } else {
-            updateField(true);
+            number_of_tries = number_of_tries + 1;
+            updateField(true, false);
         }
     }
+}
+
+function clickedOnLinearNo(){
+    number_of_tries = number_of_tries + 1;
+    updateField(true, false);
 }
 
 function markOther(id) {

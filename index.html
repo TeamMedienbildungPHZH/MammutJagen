@@ -33,7 +33,7 @@
             <table>
                 <tr>
                     <th>
-                        <select id="search" onchange="updateField(true);">
+                        <select id="search" onchange="updateField(true, true);">
                             <option value="linear">Linear</option>
                             <option value="binary">Binär</option>
                             <option value="hash">Hash</option>
@@ -41,21 +41,21 @@
                     </th>
                     <th style="width: 10px"></th>
                     <th>
-                        <select id="person" onchange="updateField(true);">
+                        <select id="person" onchange="updateField(true, true);">
                             <option value="person_1">Person 1</option>
                             <option value="person_2">Person 2</option>
                         </select>
                     </th>
                     <th style="width: 10px"></th>
                     <th>
-                        <input type="checkbox" id="expert_mode" onchange="updateField(false);">
+                        <input type="checkbox" id="expert_mode" onchange="updateField(false, false);">
                     </th>
                     <th>
                         <p id="expert_mode_text">Experten-Modus</p>
                     </th>
                     <th style="width: 30px"></th>
                     <th>
-                        <select id="type" onchange="updateField(true);">
+                        <select id="type" onchange="updateField(true, true);">
                             <option value="type_a">Typ A</option>
                             <option value="type_b">Typ B</option>
                             <option value="type_c">Typ C</option>
@@ -67,7 +67,7 @@
                     </th>
                     <th style="width: 10px"></th>
                     <th>
-                        <input type="checkbox" id="led" onchange="updateField(true);" checked>
+                        <input type="checkbox" id="led" onchange="updateField(true, true);" checked>
                     </th>
                     <th>
                         <p id="led_text">geführt</p>
