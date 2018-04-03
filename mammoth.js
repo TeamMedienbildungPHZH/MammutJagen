@@ -277,6 +277,7 @@ function enemyTableCreate(search_type) {
                         td.appendChild(input_no);
                         td.appendChild(label_no);
 
+                        input_yes.onclick = function() { markAsFound(td_id) };
                         input_no.onclick = function () { updateField(true) };
                     }
                 } else {
@@ -294,7 +295,7 @@ function enemyTableCreate(search_type) {
                     var input = document.createElement("input");
                     input.type = "text";
                     input.id = "weight_input_" + count;
-                    input.onkeydown = function () { getLastWeightInput(input.id) };
+                    input.onkeydown = function () { getLastWeightInput(input.id, td_id) };
                     input.style.width = text_field_style_width;
                     td.appendChild(input);
                 }
@@ -326,11 +327,15 @@ function enemyTableCreate(search_type) {
     return table;
 }
 
-function getLastWeightInput(id){
+function getLastWeightInput(input_id, td_id){
     if(event.keyCode == 13){
-        var input = document.getElementById(id);
+        var input = document.getElementById(input_id);
         last_weight_input = Number(input.value);
-        updateField(true);
+        if(last_weight_input == selected_enemy_weight){
+            markAsFound(td_id);
+        } else {
+            updateField(true);
+        }
     }
 }
 
@@ -377,6 +382,11 @@ function getNextLedID(weight_value){
     new_value = Math.round(new_value);
     led_list.push(new_value);
     return new_value;
+}
+
+function markAsFound(id){
+    var td = document.getElementById(id);
+    td.style.backgroundColor = won_color;
 }
 
 function generateDigitSum(value) {

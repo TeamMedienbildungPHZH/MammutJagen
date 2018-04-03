@@ -7,3 +7,4 @@ const text_field_style_width = "40px";
 const normal_color = "White";
 const own_color = "dodgerblue";
 const enemy_color = "mediumorchid";
+const won_color = "greenyellow ";
