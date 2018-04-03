@@ -4,9 +4,9 @@ var selected_type;
 var selected_expert_mode;
 var selected_led;
 var selected_enemy_weight;
-var ship_numbers = row * column;
-var own_ship_numbers = [];
-var enemy_ship_numbers = [];
+var mammoth_numbers = row * column;
+var own_mammoth_numbers = [];
+var enemy_mammoth_numbers = [];
 var last_clicked_td = null;
 var number_of_tries;
 var try_text;
@@ -24,14 +24,14 @@ function updateField(recreating) {
     number_of_tries = 0;
     getFormValues();
     updateForms();
-    own_ship_numbers = creatShipNumbers(selected_type, selected_person, selected_search);
+    own_mammoth_numbers = creatShipNumbers(selected_type, selected_person, selected_search);
     var other_person;
     if (selected_person == "person_1") {
         other_person = "person_2";
     } else {
         other_person = "person_1";
     }
-    enemy_ship_numbers = creatShipNumbers(selected_type, other_person, selected_search);
+    enemy_mammoth_numbers = creatShipNumbers(selected_type, other_person, selected_search);
     if (recreating) {
         ownDropdownCreate(selected_search);
         enemyTableCreate(selected_search);
@@ -154,7 +154,7 @@ function creatShipNumbers(type, person, search_type) {
     var digit_sum = type_value + 6 + person_value;
     var digit_sum_count = 0;
     var base_value = 0;     // used to count up while i can be manipulated.
-    for (i = 0; i < ship_numbers; i++) {
+    for (i = 0; i < mammoth_numbers; i++) {
         // generate "predictable random" number
         number_list[i] = Math.floor(Math.pow(Math.PI * (number_max + 1) * (7 * (person_value - 1)) * type_value + 7223 * type_value * (base_value + 1), person_value * (base_value % 10 + 1))) % (number_max + 1);
         base_value++;
@@ -202,12 +202,12 @@ function ownDropdownCreate(search_type) {
 
     var option;
 
-    for (var i = 0; i < ship_numbers; i++) {
+    for (var i = 0; i < mammoth_numbers; i++) {
         var option_id = "option" + 'A'.charCodeAt() + i;
-        var option_text = "Mammut " + String.fromCharCode('A'.charCodeAt() + i) + " Gewicht: " + own_ship_numbers[i];
+        var option_text = "Mammut " + String.fromCharCode('A'.charCodeAt() + i) + " Gewicht: " + own_mammoth_numbers[i];
 
         if(selected_search == "hash"){
-            option_text = option_text + " Quersumme: " + generateDigitSum(own_ship_numbers[i]);
+            option_text = option_text + " Quersumme: " + generateDigitSum(own_mammoth_numbers[i]);
         }
 
         option = dropdown.appendChild(document.createElement('option'));
@@ -243,14 +243,14 @@ function enemyTableCreate(search_type) {
             td.appendChild(document.createTextNode('\u0020'));
             td.appendChild(document.createElement("BR"));
             var image = document.createElement("IMG");
-            image.src = battle_ship_path;
-            image.width = battle_ship_width;
+            image.src = mammoth_image_path;
+            image.width = mammoth_width;
             td.appendChild(image);
             var letter = document.createElement("H3");
             var letter_value = String.fromCharCode('A'.charCodeAt() + count);
             if (search_type == "hash") {
                 var digit_sum_number;
-                digit_sum_number = generateDigitSum(enemy_ship_numbers[count]);
+                digit_sum_number = generateDigitSum(enemy_mammoth_numbers[count]);
                 letter_value = letter_value + " QS: " + digit_sum_number;
             }
             letter.appendChild(document.createTextNode(letter_value));
@@ -357,8 +357,8 @@ function getNextLedID(weight_value){
             led_list.push(0)
             return 0;
         } else if(selected_search == "binary"){
-            led_list.push(ship_numbers);
-            last_weight_step = ship_numbers;
+            led_list.push(mammoth_numbers);
+            last_weight_step = mammoth_numbers;
         }
     }
 
@@ -367,7 +367,7 @@ function getNextLedID(weight_value){
     var new_step;
     if(selected_search == "linear"){
         new_value = last_value + 1;
-        if(new_value >= ship_numbers){
+        if(new_value >= mammoth_numbers){
             new_value = 0;
         }
     } else if(selected_search == "binary"){
