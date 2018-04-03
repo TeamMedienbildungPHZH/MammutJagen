@@ -362,6 +362,9 @@ function getNextLedID(weight_value){
     var new_step;
     if(selected_search == "linear"){
         new_value = last_value + 1;
+        if(new_value >= ship_numbers){
+            new_value = 0;
+        }
     } else if(selected_search == "binary"){
         last_weight_step = last_weight_step / 2;
         if(weight_value < selected_enemy_weight){
@@ -371,7 +374,7 @@ function getNextLedID(weight_value){
         }
     }
 
-    new_value = Math.floor(new_value);
+    new_value = Math.round(new_value);
     led_list.push(new_value);
     return new_value;
 }
