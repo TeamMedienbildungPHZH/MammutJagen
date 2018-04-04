@@ -69,57 +69,42 @@ function updateForms() {
 
 function getFormValues() {
     var e
-    var change = false;
     var new_value;
 
     e = document.getElementById("search");
     new_value = e.options[e.selectedIndex].value;
     if (new_value != selected_search) {
         selected_search = new_value;
-        change = true;
     }
 
     e = document.getElementById("person");
     new_value = e.options[e.selectedIndex].value;
     if (new_value != selected_person) {
         selected_person = new_value
-        change = true;
     }
 
     e = document.getElementById("type");
     new_value = e.options[e.selectedIndex].value;
     if (new_value != selected_type) {
         selected_type = new_value;
-        change = true;
     }
 
     e = document.getElementById("expert_mode");
     new_value = e.checked;
     if (new_value != selected_expert_mode) {
         selected_expert_mode = new_value;
-        // no change
     }
 
     e = document.getElementById("led");
     new_value = e.checked;
     if (new_value != selected_led) {
         selected_led = new_value;
-        change = true;
     }
 
     e = document.getElementById("weight");
     new_value = e.value;
     if (new_value != selected_enemy_weight) {
         selected_enemy_weight = new_value;
-        // no change
-    }
-
-    if (change) {
-        e = document.getElementById("weight");
-        e.value = "";
-
-        led_list.length = 0;
-        last_weight_step = 0;
     }
 }
 
