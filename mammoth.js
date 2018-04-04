@@ -23,6 +23,9 @@ function startGame() {
 function updateField(recreating, resetting) {
     if(resetting){
         number_of_tries = 0;
+        led_list = [];
+        last_weight_step = 0;
+        last_weight_input = 0;
     }
     getFormValues();
     updateForms();
@@ -230,17 +233,21 @@ function enemyTableCreate(search_type) {
     div = document.getElementById('other_table');
 
     var table = document.createElement('table');
+    div.appendChild(table);
     table.id = "ship_table";
     table.style.width = '100%';
     table.setAttribute('border', '0');
     var tbdy = document.createElement('tbody');
+    table.appendChild(tbdy);
     var count = 0;
     var next_id = getNextLedID(last_weight_input);
     for (var i = 0; i < row; i++) {
         var tr = document.createElement('tr');
+        tbdy.appendChild(tr);
         for (var j = 0; j < column; j++) {
             const td_id = "td" + 'A'.charCodeAt() + count;
             var td = document.createElement('td');
+            tr.appendChild(td);
             td.id = td_id;
             td.appendChild(document.createTextNode('\u0020'));
             td.appendChild(document.createElement("BR"));
@@ -250,16 +257,20 @@ function enemyTableCreate(search_type) {
             td.appendChild(image);
             var letter = document.createElement("H3");
             var letter_value = String.fromCharCode('A'.charCodeAt() + count);
+
+            var digit_sum_number;
+            digit_sum_number = generateDigitSum(enemy_mammoth_numbers[count]);
             if (search_type == "hash") {
-                var digit_sum_number;
-                digit_sum_number = generateDigitSum(enemy_mammoth_numbers[count]);
                 letter_value = letter_value + " QS: " + digit_sum_number;
+                if(digit_sum_number == generateDigitSum(selected_enemy_weight)){
+                    setFieldColor(td_id, enemy_color);
+                }
             }
             letter.appendChild(document.createTextNode(letter_value));
             td.appendChild(letter);
 
             
-            if(selected_search == "linear"){
+            if(search_type == "linear"){
                 var input_yes = document.createElement("input");
                 var input_no = document.createElement("input");
                 var label_yes = document.createElement("label");
@@ -281,6 +292,7 @@ function enemyTableCreate(search_type) {
 
                         input_yes.onclick = function() { markAsFound(td_id) };
                         input_no.onclick = function () { clickedOnLinearNo() };
+                        setFieldColor(td_id, enemy_color);
                     }
                 } else {
                     input_yes.onclick = function () { markOther(td_id) };
@@ -292,23 +304,40 @@ function enemyTableCreate(search_type) {
                     td.appendChild(input_no);
                     td.appendChild(label_no);
                 }
-            } else if(selected_search == "binary") {
+            } else if(search_type == "binary") {
                 if(selected_led){
                     if(count == next_id){
                         var input = document.createElement("input");
                         input.type = "text";
                         input.id = "weight_input_" + count;
-                        input.onkeydown = function () { getLastWeightInput(input.id, td_id) };
+                        input.onkeydown = function () { enteredOnBinaryInput(input.id, td_id) };
+                        input.style.width = text_field_style_width;
+                        td.appendChild(input);
+                        setFieldColor(td_id, enemy_color);
+                    }
+                } else {
+                    var input = document.createElement("input");
+                    input.type = "text";
+                    input.id = "weight_input_" + count;
+                    input.style.width = text_field_style_width;
+                    td.appendChild(input);
+                }
+            } else if(search_type == "hash") {
+                if(selected_led){
+                    if(digit_sum_number == generateDigitSum(selected_enemy_weight)){
+                        var input = document.createElement("input");
+                        input.type = "text";
+                        input.id = "weight_input_" + count;
                         input.style.width = text_field_style_width;
                         td.appendChild(input);
                     }
+                } else {
+                    var input = document.createElement("input");
+                    input.type = "text";
+                    input.id = "weight_input_" + count;
+                    input.style.width = text_field_style_width;
+                    td.appendChild(input);
                 }
-            } else if(selected_search == "hash") {
-                var input = document.createElement("input");
-                input.type = "text";
-                input.id = "weight_input_" + count;
-                input.style.width = text_field_style_width;
-                td.appendChild(input);
             }
 
             if(selected_led){
@@ -320,22 +349,21 @@ function enemyTableCreate(search_type) {
             td.appendChild(document.createElement("BR"));
             td.appendChild(document.createElement("BR"));
             td.appendChild(document.createElement("BR"));
-            tr.appendChild(td);
             count = count + 1;
         }
         tr.setAttribute("align", "center")
-        tbdy.appendChild(tr);
     }
-    table.appendChild(tbdy);
-    div.appendChild(table);
     return table;
 }
 
-function getLastWeightInput(input_id, td_id){
+function enteredOnBinaryInput(input_id, td_id){
     if(event.keyCode == 13){
         var input = document.getElementById(input_id);
         last_weight_input = Number(input.value);
-        if(last_weight_input == selected_enemy_weight){
+        getFormValues();
+        if(selected_enemy_weight == 0){
+            alert(message_missing_mammoth_weight);
+        } else if(last_weight_input == selected_enemy_weight){
             markAsFound(td_id);
         } else {
             number_of_tries = number_of_tries + 1;
@@ -344,18 +372,33 @@ function getLastWeightInput(input_id, td_id){
     }
 }
 
+function enteredSearchedWeight(){
+    if(selected_search == "hash"){
+        updateField(true, false);
+    }
+}
+
 function clickedOnLinearNo(){
     number_of_tries = number_of_tries + 1;
     updateField(true, false);
 }
 
-function markOther(id) {
+function setFieldColor(id, color){
     var td = document.getElementById(id);
-    if (td.style.backgroundColor == enemy_color) {
-        td.style.backgroundColor = normal_color;
+    td.style.backgroundColor = color;
+}
+
+function getFieldColor(id){
+    var td = document.getElementById(id);
+    return td.style.backgroundColor;
+}
+
+function markOther(id) {
+    if (getFieldColor(id) == enemy_color) {
+        setFieldColor(id, normal_color);
         number_of_tries = number_of_tries - 1;
     } else {
-        td.style.backgroundColor = enemy_color;
+        setFieldColor(id, enemy_color);
         number_of_tries = number_of_tries + 1;
     }
     updateTries();
@@ -389,6 +432,8 @@ function getNextLedID(weight_value){
         }
         if(new_value < 0){
             new_value = 0;
+        } else if(new_value >= mammoth_numbers){
+            new_value = mammoth_numbers - 1;
         }
     }
     led_list.push(new_value);
@@ -396,8 +441,7 @@ function getNextLedID(weight_value){
 }
 
 function markAsFound(id){
-    var td = document.getElementById(id);
-    td.style.backgroundColor = won_color;
+    setFieldColor(id, won_color);
 }
 
 function generateDigitSum(value) {
