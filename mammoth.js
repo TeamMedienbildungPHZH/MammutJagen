@@ -11,7 +11,7 @@ var last_clicked_td = null;
 var number_of_tries;
 var try_text;
 var led_list = [];
-var last_weight_step;
+var last_binary_step;
 var last_weight_input;
 
 function startGame() {
@@ -24,7 +24,7 @@ function updateField(recreating, resetting) {
     if(resetting){
         number_of_tries = 0;
         led_list = [];
-        last_weight_step = 0;
+        last_binary_step = 0;
         last_weight_input = 0;
     }
     getFormValues();
@@ -399,8 +399,10 @@ function getNextLedID(weight_value){
             led_list.push(0)
             return 0;
         } else if(selected_search == "binary"){
-            led_list.push(mammoth_numbers);
-            last_weight_step = mammoth_numbers + 1;     // + 1 so it reaches the last element
+            new_value = Math.floor(mammoth_numbers / 2);
+            last_binary_step = new_value;
+            led_list.push(new_value);
+            return new_value;
         }
     }
 
@@ -413,11 +415,11 @@ function getNextLedID(weight_value){
             new_value = 0;  // start over
         }
     } else if(selected_search == "binary"){
-        last_weight_step = Math.round(last_weight_step / 2);
+        last_binary_step = Math.round(last_binary_step / 2);
         if(weight_value < selected_enemy_weight){
-            new_value = last_value + last_weight_step;
+            new_value = last_value + last_binary_step;
         } else {
-            new_value = last_value - last_weight_step;
+            new_value = last_value - last_binary_step;
         }
         if(new_value < 0){
             new_value = 0;
