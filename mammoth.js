@@ -278,6 +278,8 @@ function enemyTableCreate(search_type) {
                         input_yes.onclick = function() { markAsFound(td_id) };
                         input_no.onclick = function () { clickedOnLinearNo() };
                         setFieldColor(td_id, enemy_color);
+                    } else if(led_list.indexOf(count) > -1){    // if already selected
+                        setFieldColor(td_id, already_selected_color);
                     }
                 } else {
                     input_yes.onclick = function () { markOther(td_id) };
@@ -299,6 +301,8 @@ function enemyTableCreate(search_type) {
                         input.style.width = text_field_style_width;
                         td.appendChild(input);
                         setFieldColor(td_id, enemy_color);
+                    } else if(led_list.indexOf(count) > -1){    // if already selected
+                        setFieldColor(td_id, already_selected_color);
                     }
                 } else {
                     var input = document.createElement("input");
