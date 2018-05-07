@@ -11,8 +11,8 @@ var last_clicked_td = null;
 var number_of_tries;
 var try_text;
 var led_list = [];
-var last_binary_step;
 var last_weight_input;
+var binary_min_max = [0, mammoth_numbers]
 
 function startGame() {
     try_text = document.createTextNode('');
@@ -400,7 +400,6 @@ function getNextLedID(weight_value){
             return 0;
         } else if(selected_search == "binary"){
             new_value = Math.round(mammoth_numbers / 2 - 1);
-            last_binary_step = new_value;
             led_list.push(new_value);
             return new_value;
         }
@@ -408,19 +407,18 @@ function getNextLedID(weight_value){
 
     var last_value = led_list[led_list.length - 1];
     var new_value;
-    var new_step;
     if(selected_search == "linear"){
         new_value = last_value + 1;
         if(new_value >= mammoth_numbers){
             new_value = 0;  // start over
         }
     } else if(selected_search == "binary"){
-        var fixed_half_last_binary_step = last_binary_step / 2 + 0.1 // + 0.1 for round fixing
-        last_binary_step = Math.round(fixed_half_last_binary_step);  
         if(weight_value < selected_enemy_weight){
-            new_value = last_value + last_binary_step;
+            binary_min_max[0] = last_value;     // set new min
+            new_value = last_value + Math.round((binary_min_max[1] - last_value) / 2 );
         } else {
-            new_value = last_value - last_binary_step;
+            binary_min_max[1] = last_value;     // set new max
+            new_value = last_value - Math.round((last_value - binary_min_max[0]) / 2);
         }
         if(new_value < 0){
             new_value = 0;
