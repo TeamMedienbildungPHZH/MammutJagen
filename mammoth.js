@@ -13,7 +13,8 @@ var try_text;
 var led_list = [];
 var last_weight_input;
 var binary_min_max = [0, mammoth_numbers]
-var binary_old_values;
+var binary_history;
+var hash_history;
 
 function startGame() {
     try_text = document.createTextNode('');
@@ -27,7 +28,8 @@ function updateField(recreating, resetting) {
         led_list = [];
         last_binary_step = 0;
         last_weight_input = 0;
-        binary_old_values = new Array(mammoth_numbers);
+        binary_history = new Array(mammoth_numbers);
+        hash_history = new Array(mammoth_numbers);
     }
     getFormValues();
     updateForms();
@@ -306,7 +308,7 @@ function enemyTableCreate(search_type) {
                     } else if(led_list.indexOf(count) > -1){    // if already selected
                         setFieldColor(td_id, already_selected_color);
                         var label_old_value = document.createElement("label");
-                        label_old_value.textContent = binary_old_values[count].toString();
+                        label_old_value.textContent = binary_history[count].toString();
                         td.appendChild(label_old_value);
                     }
                 } else {
@@ -319,11 +321,20 @@ function enemyTableCreate(search_type) {
             } else if(search_type == "hash") {
                 if(selected_led){
                     if(digit_sum_number == generateDigitSum(selected_enemy_weight)){
-                        var input = document.createElement("input");
-                        input.type = "text";
-                        input.id = "weight_input_" + count;
-                        input.style.width = text_field_style_width;
-                        td.appendChild(input);
+                        if(hash_history[count] == null){
+                            var input = document.createElement("input");
+                            input.type = "text";
+                            input.id = "weight_input_" + count;
+                            var input_number = count
+                            input.onkeydown = function () { enteredOnHashInput(input.id, td_id, input_number) };
+                            input.style.width = text_field_style_width;
+                            td.appendChild(input);
+                        } else {
+                            setFieldColor(td_id, already_selected_color);
+                            var label_old_value = document.createElement("label");
+                            label_old_value.textContent = hash_history[count].toString();
+                            td.appendChild(label_old_value);
+                        }
                     }
                 } else {
                     var input = document.createElement("input");
@@ -361,6 +372,23 @@ function enteredOnBinaryInput(input_id, td_id){
             markAsFound(td_id);
         } else {
             number_of_tries = number_of_tries + 1;
+            updateField(true, false);
+        }
+    }
+}
+
+function enteredOnHashInput(input_id, td_id, number){
+    if(event.keyCode == 13){
+        var input = document.getElementById(input_id);
+        last_weight_input = Number(input.value);
+        getFormValues();
+        if(selected_enemy_weight == 0){
+            alert(message_missing_mammoth_weight);
+        } else if(last_weight_input == selected_enemy_weight){
+            markAsFound(td_id);
+        } else {
+            number_of_tries = number_of_tries + 1;
+            hash_history[number] =  last_weight_input;
             updateField(true, false);
         }
     }
@@ -431,7 +459,7 @@ function getNextLedID(weight_value){
             new_value = mammoth_numbers - 1;
         }
 
-        binary_old_values[last_value] = weight_value;
+        binary_history[last_value] = weight_value;
     }
     led_list.push(new_value);
     return new_value;
