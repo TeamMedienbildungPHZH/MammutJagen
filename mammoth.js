@@ -13,6 +13,7 @@ var try_text;
 var led_list = [];
 var last_weight_input;
 var binary_min_max = [0, mammoth_numbers]
+var binary_old_values;
 
 function startGame() {
     try_text = document.createTextNode('');
@@ -26,6 +27,7 @@ function updateField(recreating, resetting) {
         led_list = [];
         last_binary_step = 0;
         last_weight_input = 0;
+        binary_old_values = new Array(mammoth_numbers);
     }
     getFormValues();
     updateForms();
@@ -303,6 +305,9 @@ function enemyTableCreate(search_type) {
                         setFieldColor(td_id, enemy_color);
                     } else if(led_list.indexOf(count) > -1){    // if already selected
                         setFieldColor(td_id, already_selected_color);
+                        var label_old_value = document.createElement("label");
+                        label_old_value.textContent = binary_old_values[count].toString();
+                        td.appendChild(label_old_value);
                     }
                 } else {
                     var input = document.createElement("input");
@@ -425,6 +430,8 @@ function getNextLedID(weight_value){
         } else if(new_value >= mammoth_numbers){
             new_value = mammoth_numbers - 1;
         }
+
+        binary_old_values[last_value] = weight_value;
     }
     led_list.push(new_value);
     return new_value;
