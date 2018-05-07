@@ -399,7 +399,7 @@ function getNextLedID(weight_value){
             led_list.push(0)
             return 0;
         } else if(selected_search == "binary"){
-            new_value = Math.floor(mammoth_numbers / 2);
+            new_value = Math.round(mammoth_numbers / 2 - 1);
             last_binary_step = new_value;
             led_list.push(new_value);
             return new_value;
@@ -415,7 +415,8 @@ function getNextLedID(weight_value){
             new_value = 0;  // start over
         }
     } else if(selected_search == "binary"){
-        last_binary_step = Math.round(last_binary_step / 2);
+        var fixed_half_last_binary_step = last_binary_step / 2 + 0.1 // + 0.1 for round fixing
+        last_binary_step = Math.round(fixed_half_last_binary_step);  
         if(weight_value < selected_enemy_weight){
             new_value = last_value + last_binary_step;
         } else {
