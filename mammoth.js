@@ -386,8 +386,9 @@ function enteredOnHashInput(element){
             markAsFound(element.parentNode.id);
         } else {
             number_of_tries = number_of_tries + 1;
-            number_array = element.id.split('_'),
-            hash_history[number_array[number_array.length - 1]] =  last_weight_input;
+            number_array = element.id.split('_');
+            field_number = number_array[number_array.length - 1];
+            hash_history[field_number] =  last_weight_input;
             updateField(true, false);
         }
     }
@@ -447,11 +448,12 @@ function getNextLedID(weight_value){
     } else if(selected_search == "binary"){
         if(weight_value < selected_enemy_weight){
             binary_min_max[0] = last_value + 1;     // set new min
-            new_value = binary_min_max[1] - Math.round((binary_min_max[1] - binary_min_max[0]) / 2);
         } else {
             binary_min_max[1] = last_value - 1;     // set new max
-            new_value = binary_min_max[1] - Math.round((binary_min_max[1] - binary_min_max[0]) / 2);
         }
+
+        new_value = binary_min_max[1] - Math.round((binary_min_max[1] - binary_min_max[0]) / 2);
+
         if(new_value < 0){
             new_value = 0;
         } else if(new_value >= mammoth_numbers){
