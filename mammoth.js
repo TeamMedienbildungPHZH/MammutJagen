@@ -302,7 +302,7 @@ function enemyTableCreate(search_type) {
                         var input = document.createElement("input");
                         input.type = "text";
                         input.id = "weight_input_" + count;
-                        input.onkeydown = function () { enteredOnBinaryInput(input.id, td_id) };
+                        input.onkeydown = function () { enteredOnBinaryInput(this) };
                         input.style.width = text_field_style_width;
                         td.appendChild(input);
                         setFieldColor(td_id, enemy_color);
@@ -326,8 +326,7 @@ function enemyTableCreate(search_type) {
                             var input = document.createElement("input");
                             input.type = "text";
                             input.id = "weight_input_" + count;
-                            var input_number = count
-                            input.onkeydown = function () { enteredOnHashInput(input.id, td_id, input_number) };
+                            input.onkeydown = function () { enteredOnHashInput(this) };
                             input.style.width = text_field_style_width;
                             td.appendChild(input);
                         } else {
@@ -362,15 +361,14 @@ function enemyTableCreate(search_type) {
     return table;
 }
 
-function enteredOnBinaryInput(input_id, td_id){
+function enteredOnBinaryInput(element){
     if(event.keyCode == 13){
-        var input = document.getElementById(input_id);
-        last_weight_input = Number(input.value);
+        last_weight_input = Number(element.value);
         getFormValues();
         if(selected_enemy_weight == 0){
             alert(message_missing_mammoth_weight);
         } else if(last_weight_input == selected_enemy_weight){
-            markAsFound(td_id);
+            markAsFound(element.parentNode.id);
         } else {
             number_of_tries = number_of_tries + 1;
             updateField(true, false);
@@ -378,18 +376,18 @@ function enteredOnBinaryInput(input_id, td_id){
     }
 }
 
-function enteredOnHashInput(input_id, td_id, number){
+function enteredOnHashInput(element){
     if(event.keyCode == 13){
-        var input = document.getElementById(input_id);
-        last_weight_input = Number(input.value);
+        last_weight_input = Number(element.value);
         getFormValues();
         if(selected_enemy_weight == 0){
             alert(message_missing_mammoth_weight);
         } else if(last_weight_input == selected_enemy_weight){
-            markAsFound(td_id);
+            markAsFound(element.parentNode.id);
         } else {
             number_of_tries = number_of_tries + 1;
-            hash_history[number] =  last_weight_input;
+            number_array = element.id.split('_'),
+            hash_history[number_array[number_array.length - 1]] =  last_weight_input;
             updateField(true, false);
         }
     }
