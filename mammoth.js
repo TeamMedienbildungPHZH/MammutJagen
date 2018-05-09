@@ -12,7 +12,7 @@ var number_of_tries;
 var try_text;
 var led_list = [];
 var last_weight_input;
-var binary_min_max = [0, mammoth_numbers]
+var binary_min_max;
 var binary_history;
 var hash_history;
 
@@ -30,6 +30,7 @@ function updateField(recreating, resetting) {
         last_weight_input = 0;
         binary_history = new Array(mammoth_numbers);
         hash_history = new Array(mammoth_numbers);
+        binary_min_max = [0, mammoth_numbers - 1];
     }
     getFormValues();
     updateForms();
@@ -432,7 +433,7 @@ function getNextLedID(weight_value){
             led_list.push(0)
             return 0;
         } else if(selected_search == "binary"){
-            new_value = Math.round(mammoth_numbers / 2 - 1);
+            new_value = Math.floor((mammoth_numbers- 1) / 2 );
             led_list.push(new_value);
             return new_value;
         }
@@ -448,10 +449,10 @@ function getNextLedID(weight_value){
     } else if(selected_search == "binary"){
         if(weight_value < selected_enemy_weight){
             binary_min_max[0] = last_value;     // set new min
-            new_value = last_value + Math.round((binary_min_max[1] - last_value) / 2 );
+            new_value = last_value + Math.floor((binary_min_max[1] - last_value) / 2 );
         } else {
             binary_min_max[1] = last_value;     // set new max
-            new_value = last_value - Math.round((last_value - binary_min_max[0]) / 2);
+            new_value = last_value - Math.floor((last_value - binary_min_max[0]) / 2);
         }
         if(new_value < 0){
             new_value = 0;
