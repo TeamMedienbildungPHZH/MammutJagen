@@ -11,8 +11,10 @@ var last_clicked_td = null;
 var number_of_tries;
 var try_text;
 var led_list = [];
-var last_weight_step;
 var last_weight_input;
+var binary_min_max;
+var binary_history;
+var hash_history;
 
 function startGame() {
     try_text = document.createTextNode('');
@@ -24,8 +26,11 @@ function updateField(recreating, resetting) {
     if(resetting){
         number_of_tries = 0;
         led_list = [];
-        last_weight_step = 0;
+        last_binary_step = 0;
         last_weight_input = 0;
+        binary_history = new Array(mammoth_numbers);
+        hash_history = new Array(mammoth_numbers);
+        binary_min_max = [0, mammoth_numbers - 1];
     }
     getFormValues();
     updateForms();
@@ -278,6 +283,8 @@ function enemyTableCreate(search_type) {
                         input_yes.onclick = function() { markAsFound(td_id) };
                         input_no.onclick = function () { clickedOnLinearNo() };
                         setFieldColor(td_id, enemy_color);
+                    } else if(led_list.indexOf(count) > -1){    // if already selected
+                        setFieldColor(td_id, already_selected_color);
                     }
                 } else {
                     input_yes.onclick = function () { markOther(td_id) };
@@ -295,10 +302,15 @@ function enemyTableCreate(search_type) {
                         var input = document.createElement("input");
                         input.type = "text";
                         input.id = "weight_input_" + count;
-                        input.onkeydown = function () { enteredOnBinaryInput(input.id, td_id) };
+                        input.onkeydown = function () { enteredOnBinaryInput(this) };
                         input.style.width = text_field_style_width;
                         td.appendChild(input);
                         setFieldColor(td_id, enemy_color);
+                    } else if(led_list.indexOf(count) > -1){    // if already selected
+                        setFieldColor(td_id, already_selected_color);
+                        var label_old_value = document.createElement("label");
+                        label_old_value.textContent = binary_history[count].toString();
+                        td.appendChild(label_old_value);
                     }
                 } else {
                     var input = document.createElement("input");
@@ -310,11 +322,19 @@ function enemyTableCreate(search_type) {
             } else if(search_type == "hash") {
                 if(selected_led){
                     if(digit_sum_number == generateDigitSum(selected_enemy_weight)){
-                        var input = document.createElement("input");
-                        input.type = "text";
-                        input.id = "weight_input_" + count;
-                        input.style.width = text_field_style_width;
-                        td.appendChild(input);
+                        if(hash_history[count] == null){
+                            var input = document.createElement("input");
+                            input.type = "text";
+                            input.id = "weight_input_" + count;
+                            input.onkeydown = function () { enteredOnHashInput(this) };
+                            input.style.width = text_field_style_width;
+                            td.appendChild(input);
+                        } else {
+                            setFieldColor(td_id, already_selected_color);
+                            var label_old_value = document.createElement("label");
+                            label_old_value.textContent = hash_history[count].toString();
+                            td.appendChild(label_old_value);
+                        }
                     }
                 } else {
                     var input = document.createElement("input");
@@ -341,17 +361,34 @@ function enemyTableCreate(search_type) {
     return table;
 }
 
-function enteredOnBinaryInput(input_id, td_id){
+function enteredOnBinaryInput(element){
     if(event.keyCode == 13){
-        var input = document.getElementById(input_id);
-        last_weight_input = Number(input.value);
+        last_weight_input = Number(element.value);
         getFormValues();
         if(selected_enemy_weight == 0){
             alert(message_missing_mammoth_weight);
         } else if(last_weight_input == selected_enemy_weight){
-            markAsFound(td_id);
+            markAsFound(element.parentNode.id);
         } else {
             number_of_tries = number_of_tries + 1;
+            updateField(true, false);
+        }
+    }
+}
+
+function enteredOnHashInput(element){
+    if(event.keyCode == 13){
+        last_weight_input = Number(element.value);
+        getFormValues();
+        if(selected_enemy_weight == 0){
+            alert(message_missing_mammoth_weight);
+        } else if(last_weight_input == selected_enemy_weight){
+            markAsFound(element.parentNode.id);
+        } else {
+            number_of_tries = number_of_tries + 1;
+            number_array = element.id.split('_');
+            field_number = number_array[number_array.length - 1];
+            hash_history[field_number] =  last_weight_input;
             updateField(true, false);
         }
     }
@@ -395,31 +432,35 @@ function getNextLedID(weight_value){
             led_list.push(0)
             return 0;
         } else if(selected_search == "binary"){
-            led_list.push(mammoth_numbers);
-            last_weight_step = mammoth_numbers + 1;     // + 1 so it reaches the last element
+            new_value = binary_min_max[1] - Math.round((binary_min_max[1]) / 2);
+            led_list.push(new_value);
+            return new_value;
         }
     }
 
     var last_value = led_list[led_list.length - 1];
     var new_value;
-    var new_step;
     if(selected_search == "linear"){
         new_value = last_value + 1;
         if(new_value >= mammoth_numbers){
             new_value = 0;  // start over
         }
     } else if(selected_search == "binary"){
-        last_weight_step = Math.round(last_weight_step / 2);
         if(weight_value < selected_enemy_weight){
-            new_value = last_value + last_weight_step;
+            binary_min_max[0] = last_value + 1;     // set new min
         } else {
-            new_value = last_value - last_weight_step;
+            binary_min_max[1] = last_value - 1;     // set new max
         }
+
+        new_value = binary_min_max[1] - Math.round((binary_min_max[1] - binary_min_max[0]) / 2);
+
         if(new_value < 0){
             new_value = 0;
         } else if(new_value >= mammoth_numbers){
             new_value = mammoth_numbers - 1;
         }
+
+        binary_history[last_value] = weight_value;
     }
     led_list.push(new_value);
     return new_value;
