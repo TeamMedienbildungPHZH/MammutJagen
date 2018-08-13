@@ -46,6 +46,9 @@ function updateField(recreating, resetting) {
     if (recreating) {
         enemyTableCreate(selected_search);
     }
+    if(resetting){
+        ownDropdownCreate(selected_search);
+    }
     updateTries();
 }
 
