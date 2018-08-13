@@ -31,6 +31,7 @@ function updateField(recreating, resetting) {
         binary_history = new Array(mammoth_numbers);
         hash_history = new Array(mammoth_numbers);
         binary_min_max = [0, mammoth_numbers - 1];
+        ownDropdownCreate(selected_search);
     }
     getFormValues();
     updateForms();
@@ -43,7 +44,6 @@ function updateField(recreating, resetting) {
     }
     enemy_mammoth_numbers = creatShipNumbers(selected_type, other_person, selected_search);
     if (recreating) {
-        ownDropdownCreate(selected_search);
         enemyTableCreate(selected_search);
     }
     updateTries();
