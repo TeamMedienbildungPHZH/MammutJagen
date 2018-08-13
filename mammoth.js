@@ -31,7 +31,6 @@ function updateField(recreating, resetting) {
         binary_history = new Array(mammoth_numbers);
         hash_history = new Array(mammoth_numbers);
         binary_min_max = [0, mammoth_numbers - 1];
-        ownDropdownCreate(selected_search);
     }
     getFormValues();
     updateForms();
@@ -305,7 +304,7 @@ function enemyTableCreate(search_type) {
                         var input = document.createElement("input");
                         input.type = "text";
                         input.id = "weight_input_" + count;
-                        input.onkeyup = function (event) { enteredOnBinaryInput(event, this) };
+                        createBinaryInput(input);
                         input.style.width = text_field_style_width;
                         td.appendChild(input);
                         setFieldColor(td_id, enemy_color);
@@ -323,13 +322,14 @@ function enemyTableCreate(search_type) {
                     td.appendChild(input);
                 }
             } else if(search_type == "hash") {
-                if(selected_led){
-                    if(digit_sum_number == generateDigitSum(selected_enemy_weight)){
-                        if(hash_history[count] == null){
+                if (selected_led) {
+                    if (digit_sum_number == generateDigitSum(selected_enemy_weight)) {
+                        if (hash_history[count] == null) {
                             var input = document.createElement("input");
                             input.type = "text";
                             input.id = "weight_input_" + count;
-                            input.onkeyup = function (event) { enteredOnHashInput(event, this) };
+                            var weight = enemy_mammoth_numbers[count];
+                            createHashInput(input, weight);     // indirect call to convert weight to "call by value" instead of "call by reference"
                             input.style.width = text_field_style_width;
                             td.appendChild(input);
                         } else {
@@ -364,6 +364,14 @@ function enemyTableCreate(search_type) {
     return table;
 }
 
+function createBinaryInput(input){
+    input.onkeyup = function (event) { enteredOnBinaryInput(event, this) };
+}
+
+function createHashInput(input, weight){
+    input.onkeyup = function (event) { enteredOnHashInput(event, this, weight) };
+}
+
 function enteredOnBinaryInput(event, element){
     if(event.keyCode == 13){
         last_weight_input = Number(element.value);
@@ -379,12 +387,14 @@ function enteredOnBinaryInput(event, element){
     }
 }
 
-function enteredOnHashInput(event, element){
+function enteredOnHashInput(event, element, mammoth_value){
     if(event.keyCode == 13){
         last_weight_input = Number(element.value);
         getFormValues();
         if(selected_enemy_weight == 0){
             alert(message_missing_mammoth_weight);
+        } else if(last_weight_input != mammoth_value){
+            alert(message_wrong_mammoth_weight);
         } else if(last_weight_input == selected_enemy_weight){
             markAsFound(element.parentNode.id);
         } else {
