@@ -248,9 +248,9 @@ function enemyTableCreate(search_type) {
             var letter = document.createElement("H3");
             var letter_value = String.fromCharCode('A'.charCodeAt() + count);
 
-            var digit_sum_number;
-            digit_sum_number = generateDigitSum(enemy_mammoth_numbers[count]);
             if (search_type == "hash") {
+                var digit_sum_number;
+                digit_sum_number = generateDigitSum(enemy_mammoth_numbers[count]);
                 letter_value = letter_value + " QS: " + digit_sum_number;
                 if(digit_sum_number == generateDigitSum(selected_enemy_weight)){
                     setFieldColor(td_id, enemy_color);
