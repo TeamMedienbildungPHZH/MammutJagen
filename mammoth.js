@@ -72,6 +72,14 @@ function updateForms() {
         e = document.getElementById("led_text");
         e.style.visibility = "hidden";
     }
+
+    if(selected_search == "binary" || selected_search == "hash"){
+        e = document.getElementById("enter_text");
+        e.style.visibility = "visible";
+    } else {
+        e = document.getElementById("enter_text");
+        e.style.visibility = "hidden";
+    }
 }
 
 function getFormValues() {
