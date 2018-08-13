@@ -302,7 +302,7 @@ function enemyTableCreate(search_type) {
                         var input = document.createElement("input");
                         input.type = "text";
                         input.id = "weight_input_" + count;
-                        input.onkeydown = function () { enteredOnBinaryInput(this) };
+                        input.onkeyup = function (event) { enteredOnBinaryInput(event, this) };
                         input.style.width = text_field_style_width;
                         td.appendChild(input);
                         setFieldColor(td_id, enemy_color);
@@ -326,7 +326,7 @@ function enemyTableCreate(search_type) {
                             var input = document.createElement("input");
                             input.type = "text";
                             input.id = "weight_input_" + count;
-                            input.onkeydown = function () { enteredOnHashInput(this) };
+                            input.onkeyup = function (event) { enteredOnHashInput(event, this) };
                             input.style.width = text_field_style_width;
                             td.appendChild(input);
                         } else {
@@ -361,7 +361,7 @@ function enemyTableCreate(search_type) {
     return table;
 }
 
-function enteredOnBinaryInput(element){
+function enteredOnBinaryInput(event, element){
     if(event.keyCode == 13){
         last_weight_input = Number(element.value);
         getFormValues();
@@ -376,7 +376,7 @@ function enteredOnBinaryInput(element){
     }
 }
 
-function enteredOnHashInput(element){
+function enteredOnHashInput(event, element){
     if(event.keyCode == 13){
         last_weight_input = Number(element.value);
         getFormValues();
