@@ -386,6 +386,8 @@ function enteredOnBinaryInput(event, element){
         getFormValues();
         if(selected_enemy_weight == 0){
             alert(message_missing_mammoth_weight);
+        } else if(isNaN(last_weight_input)){
+            alert(message_not_a_number);
         } else if(last_weight_input == selected_enemy_weight){
             markAsFound(element.parentNode.id);
         } else {

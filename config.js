@@ -11,4 +11,5 @@ const won_color = "greenyellow ";
 const already_selected_color = "Gainsboro"
 
 const message_missing_mammoth_weight = "Bitte gebe das Gewicht des gesuchten Mammuts an.";
+const message_not_a_number = "Bitte gebe eine Zahl ein.";
 const message_wrong_mammoth_weight = "Dies ist nicht das Gewicht des ausgewählten Mammuts!";
