@@ -31,6 +31,7 @@ function updateField(recreating, resetting) {
         binary_history = new Array(mammoth_numbers);
         hash_history = new Array(mammoth_numbers);
         binary_min_max = [0, mammoth_numbers - 1];
+        resetWeightForm();
     }
     getFormValues();
     updateForms();
@@ -43,8 +44,10 @@ function updateField(recreating, resetting) {
     }
     enemy_mammoth_numbers = creatShipNumbers(selected_type, other_person, selected_search);
     if (recreating) {
-        ownDropdownCreate(selected_search);
         enemyTableCreate(selected_search);
+    }
+    if(resetting){
+        ownDropdownCreate(selected_search);
     }
     updateTries();
 }
@@ -70,10 +73,24 @@ function updateForms() {
         e = document.getElementById("led_text");
         e.style.visibility = "hidden";
     }
+
+    if(selected_search == "binary" || selected_search == "hash"){
+        e = document.getElementById("enter_text");
+        e.style.visibility = "visible";
+    } else {
+        e = document.getElementById("enter_text");
+        e.style.visibility = "hidden";
+    }
+}
+
+function resetWeightForm() {
+    var e;
+    e = document.getElementById("weight");
+    e.value = "";
 }
 
 function getFormValues() {
-    var e
+    var e;
     var new_value;
 
     e = document.getElementById("search");
@@ -248,9 +265,9 @@ function enemyTableCreate(search_type) {
             var letter = document.createElement("H3");
             var letter_value = String.fromCharCode('A'.charCodeAt() + count);
 
-            var digit_sum_number;
-            digit_sum_number = generateDigitSum(enemy_mammoth_numbers[count]);
             if (search_type == "hash") {
+                var digit_sum_number;
+                digit_sum_number = generateDigitSum(enemy_mammoth_numbers[count]);
                 letter_value = letter_value + " QS: " + digit_sum_number;
                 if(digit_sum_number == generateDigitSum(selected_enemy_weight)){
                     setFieldColor(td_id, enemy_color);
@@ -302,7 +319,7 @@ function enemyTableCreate(search_type) {
                         var input = document.createElement("input");
                         input.type = "text";
                         input.id = "weight_input_" + count;
-                        input.onkeydown = function () { enteredOnBinaryInput(this) };
+                        createBinaryInput(input);
                         input.style.width = text_field_style_width;
                         td.appendChild(input);
                         setFieldColor(td_id, enemy_color);
@@ -320,13 +337,14 @@ function enemyTableCreate(search_type) {
                     td.appendChild(input);
                 }
             } else if(search_type == "hash") {
-                if(selected_led){
-                    if(digit_sum_number == generateDigitSum(selected_enemy_weight)){
-                        if(hash_history[count] == null){
+                if (selected_led) {
+                    if (digit_sum_number == generateDigitSum(selected_enemy_weight)) {
+                        if (hash_history[count] == null) {
                             var input = document.createElement("input");
                             input.type = "text";
                             input.id = "weight_input_" + count;
-                            input.onkeydown = function () { enteredOnHashInput(this) };
+                            var weight = enemy_mammoth_numbers[count];
+                            createHashInput(input, weight);     // indirect call to convert weight to "call by value" instead of "call by reference"
                             input.style.width = text_field_style_width;
                             td.appendChild(input);
                         } else {
@@ -361,12 +379,22 @@ function enemyTableCreate(search_type) {
     return table;
 }
 
-function enteredOnBinaryInput(element){
+function createBinaryInput(input){
+    input.onkeyup = function (event) { enteredOnBinaryInput(event, this) };
+}
+
+function createHashInput(input, weight){
+    input.onkeyup = function (event) { enteredOnHashInput(event, this, weight) };
+}
+
+function enteredOnBinaryInput(event, element){
     if(event.keyCode == 13){
         last_weight_input = Number(element.value);
         getFormValues();
         if(selected_enemy_weight == 0){
             alert(message_missing_mammoth_weight);
+        } else if(isNaN(last_weight_input)){
+            alert(message_not_a_number);
         } else if(last_weight_input == selected_enemy_weight){
             markAsFound(element.parentNode.id);
         } else {
@@ -376,12 +404,16 @@ function enteredOnBinaryInput(element){
     }
 }
 
-function enteredOnHashInput(element){
+function enteredOnHashInput(event, element, mammoth_value){
     if(event.keyCode == 13){
         last_weight_input = Number(element.value);
         getFormValues();
         if(selected_enemy_weight == 0){
             alert(message_missing_mammoth_weight);
+        } else if(isNaN(last_weight_input)){
+            alert(message_not_a_number);
+        } else if(last_weight_input != mammoth_value){
+            alert(message_wrong_mammoth_weight);
         } else if(last_weight_input == selected_enemy_weight){
             markAsFound(element.parentNode.id);
         } else {
