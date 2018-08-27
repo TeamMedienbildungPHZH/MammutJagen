@@ -31,6 +31,7 @@ function updateField(recreating, resetting) {
         binary_history = new Array(mammoth_numbers);
         hash_history = new Array(mammoth_numbers);
         binary_min_max = [0, mammoth_numbers - 1];
+        resetWeightForm();
     }
     getFormValues();
     updateForms();
@@ -82,8 +83,14 @@ function updateForms() {
     }
 }
 
+function resetWeightForm() {
+    var e;
+    e = document.getElementById("weight");
+    e.value = "";
+}
+
 function getFormValues() {
-    var e
+    var e;
     var new_value;
 
     e = document.getElementById("search");
